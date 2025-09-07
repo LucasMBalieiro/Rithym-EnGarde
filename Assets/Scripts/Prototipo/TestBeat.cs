@@ -25,8 +25,8 @@ public class TestBeat : MonoBehaviour
 
     private void Update()
     {
-        //transform.localScale = Vector3.Lerp(transform.localScale, _localScale, returnSpeed * Time.deltaTime);
-        ReturnOriginalScale();
+        transform.localScale = Vector3.Lerp(transform.localScale, _localScale, returnSpeed * Time.deltaTime);
+        //ReturnOriginalScale();
     }
 
     private void ReturnOriginalScale()

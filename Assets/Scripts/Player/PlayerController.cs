@@ -15,12 +15,14 @@ namespace Player
         [SerializeField] private float runSpeed = 4f;
         [SerializeField] private float drag = 0.1f;
         
-        [Header("Look")]
+        [Header("Camera")]
         [SerializeField] private float lookSensitivityX = 0.1f;
         [SerializeField] private float lookSensitivityY = 0.1f;
         [SerializeField] private float lookLimitV = 89f;
         
         private PlayerMovement _playerMovement;
+        private Vector2 _cameraRotation = Vector2.zero;
+        private Vector2 _playerTargetRotation = Vector2.zero;
 
         private void Awake()
         {
@@ -44,6 +46,17 @@ namespace Player
             newVelocity = Vector3.ClampMagnitude(newVelocity, runSpeed);
             
             characterController.Move(newVelocity * Time.deltaTime);
+        }
+
+        private void LateUpdate()
+        {
+            _cameraRotation.x += lookSensitivityX * _playerMovement.LookInput.x;
+            _cameraRotation.y = Mathf.Clamp(_cameraRotation.y - lookSensitivityY * _playerMovement.LookInput.y, -lookLimitV, lookLimitV);
+            
+            _playerTargetRotation.x += transform.eulerAngles.x + lookSensitivityX * _playerMovement.LookInput.x;
+            transform.rotation = Quaternion.Euler(0f, _playerTargetRotation.x, 0f);
+            
+            playerCamera.transform.rotation = Quaternion.Euler(_cameraRotation.y, _cameraRotation.x, 0f);
         }
     }
 }

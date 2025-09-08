@@ -111,6 +111,15 @@ namespace Player
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Jump"",
+                    ""type"": ""Button"",
+                    ""id"": ""75edcc4d-9d10-4780-8477-3300fc4291be"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -289,6 +298,28 @@ namespace Player
                     ""action"": ""Look"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9dffd124-21bd-4db8-a739-f687d7b0c7dc"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f9599513-2467-4497-b0a3-a449f629a5ff"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -299,6 +330,7 @@ namespace Player
             m_PlayerMovementMap = asset.FindActionMap("PlayerMovementMap", throwIfNotFound: true);
             m_PlayerMovementMap_Movement = m_PlayerMovementMap.FindAction("Movement", throwIfNotFound: true);
             m_PlayerMovementMap_Look = m_PlayerMovementMap.FindAction("Look", throwIfNotFound: true);
+            m_PlayerMovementMap_Jump = m_PlayerMovementMap.FindAction("Jump", throwIfNotFound: true);
         }
 
         ~@PlayerControls()
@@ -381,6 +413,7 @@ namespace Player
         private List<IPlayerMovementMapActions> m_PlayerMovementMapActionsCallbackInterfaces = new List<IPlayerMovementMapActions>();
         private readonly InputAction m_PlayerMovementMap_Movement;
         private readonly InputAction m_PlayerMovementMap_Look;
+        private readonly InputAction m_PlayerMovementMap_Jump;
         /// <summary>
         /// Provides access to input actions defined in input action map "PlayerMovementMap".
         /// </summary>
@@ -400,6 +433,10 @@ namespace Player
             /// Provides access to the underlying input action "PlayerMovementMap/Look".
             /// </summary>
             public InputAction @Look => m_Wrapper.m_PlayerMovementMap_Look;
+            /// <summary>
+            /// Provides access to the underlying input action "PlayerMovementMap/Jump".
+            /// </summary>
+            public InputAction @Jump => m_Wrapper.m_PlayerMovementMap_Jump;
             /// <summary>
             /// Provides access to the underlying input action map instance.
             /// </summary>
@@ -432,6 +469,9 @@ namespace Player
                 @Look.started += instance.OnLook;
                 @Look.performed += instance.OnLook;
                 @Look.canceled += instance.OnLook;
+                @Jump.started += instance.OnJump;
+                @Jump.performed += instance.OnJump;
+                @Jump.canceled += instance.OnJump;
             }
 
             /// <summary>
@@ -449,6 +489,9 @@ namespace Player
                 @Look.started -= instance.OnLook;
                 @Look.performed -= instance.OnLook;
                 @Look.canceled -= instance.OnLook;
+                @Jump.started -= instance.OnJump;
+                @Jump.performed -= instance.OnJump;
+                @Jump.canceled -= instance.OnJump;
             }
 
             /// <summary>
@@ -503,6 +546,13 @@ namespace Player
             /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
             void OnLook(InputAction.CallbackContext context);
+            /// <summary>
+            /// Method invoked when associated input action "Jump" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// </summary>
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+            void OnJump(InputAction.CallbackContext context);
         }
     }
 }

@@ -9,6 +9,12 @@ namespace Player
         public PlayerControls PlayerControls { get; private set; }
         public Vector2 MovementInput { get; private set; }
         public Vector2 LookInput { get; private set; }
+        public bool JumpPressed { get; private set; }
+
+        private void LateUpdate()
+        {
+            JumpPressed = false;
+        }
 
         private void OnEnable()
         {
@@ -33,6 +39,13 @@ namespace Player
         public void OnLook(InputAction.CallbackContext context)
         {
             LookInput = context.ReadValue<Vector2>();
+        }
+
+        public void OnJump(InputAction.CallbackContext context)
+        {
+            if(!context.performed) return;
+
+            JumpPressed = true;
         }
     }
 }

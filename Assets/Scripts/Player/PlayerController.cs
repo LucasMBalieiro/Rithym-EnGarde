@@ -12,12 +12,14 @@ namespace Player
         
         [Header("Movement")]
         [SerializeField] private LayerMask groundLayer;
-        [SerializeField] private float runAcceleration = 0.25f;
-        [SerializeField] private float runSpeed = 4f;
-        [SerializeField] private float drag = 0.1f;
+        [SerializeField] private float runSpeed;
+        [SerializeField] private float runAcceleration;
+        [SerializeField] private float drag;
+        [SerializeField] private float airAcceleration;
+        [SerializeField] private float airDrag;
         
-        [SerializeField] private float jumpHeight = 1f;
-        [SerializeField] private float gravity = 35f;
+        [SerializeField] private float jumpHeight;
+        [SerializeField] private float gravity;
         
         private float _verticalVelocity;
         private float _antiBump;
@@ -59,16 +61,18 @@ namespace Player
         private void HandleLateralMovement()
         {
             bool isGrounded = IsGrounded();
+            float dragMagnitude = isGrounded ? drag : airDrag;
+            float accelerationMagnitude = isGrounded ? runAcceleration : airAcceleration;
             
             Vector3 cameraForwardXZ = new Vector3(playerCamera.transform.forward.x, 0, playerCamera.transform.forward.z).normalized;
             Vector3 cameraRightXZ = new Vector3(playerCamera.transform.right.x, 0, playerCamera.transform.right.z).normalized;
             Vector3 movementDirection = cameraRightXZ * _playerMovement.MovementInput.x + cameraForwardXZ * _playerMovement.MovementInput.y;
             
-            Vector3 movementDelta = movementDirection * (runAcceleration * Time.deltaTime);
+            Vector3 movementDelta = movementDirection * (accelerationMagnitude * Time.deltaTime);
             Vector3 newVelocity = _characterController.velocity + movementDelta;
             
-            Vector3 currentDrag = newVelocity.normalized * (drag * Time.deltaTime);
-            newVelocity = (newVelocity.magnitude > drag * Time.deltaTime) ? newVelocity - currentDrag : Vector3.zero;
+            Vector3 currentDrag = newVelocity.normalized * (dragMagnitude * Time.deltaTime);
+            newVelocity = (newVelocity.magnitude > dragMagnitude * Time.deltaTime) ? newVelocity - currentDrag : Vector3.zero;
             newVelocity = Vector3.ClampMagnitude(new Vector3(newVelocity.x, 0f, newVelocity.z), runSpeed);
             newVelocity.y += _verticalVelocity;
             newVelocity = !isGrounded ? HandleSteepWalls(newVelocity) : newVelocity;
@@ -161,7 +165,7 @@ namespace Player
 
         private bool IsMovingLaterally()
         {
-            Vector3 lateralVelocity = new Vector3(_characterController.velocity.x, 0f, _characterController.velocity.y);
+            Vector3 lateralVelocity = new Vector3(_characterController.velocity.x, 0f, _characterController.velocity.z);
 
             return lateralVelocity.magnitude > 0.01f;
         }

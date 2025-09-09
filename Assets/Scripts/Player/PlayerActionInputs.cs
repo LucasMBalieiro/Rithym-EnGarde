@@ -35,6 +35,7 @@ namespace Player
             if (!context.performed) return;
             
             AttackPressed = true;
+            GetComponentInChildren<SwordAnimator>().DoStab();
         }
     }
 }

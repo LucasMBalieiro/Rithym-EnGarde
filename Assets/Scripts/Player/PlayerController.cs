@@ -57,6 +57,9 @@ namespace Player
             
             _antiBump = runSpeed;
             _stepOffset = _characterController.stepOffset;
+            
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
 
         private void Update()
@@ -188,12 +191,12 @@ namespace Player
             if (accuracy >= .90)
             {
                 accuracyColor = Color.yellow;
-                Debug.Log("+90%");
+                Debug.Log("Perfect");
             }
             else
             {
                 accuracyColor = Color.red;
-                Debug.Log("-90%");
+                Debug.Log("Half hit");
             }
 
             targetCrosshairImage.color = accuracyColor;

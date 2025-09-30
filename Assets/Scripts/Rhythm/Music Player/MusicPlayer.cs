@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using NaughtyAttributes;
 using UnityEngine;
 using Utils;
@@ -10,11 +11,37 @@ namespace Rhythm
     {
         [SerializeField] private AudioSource trackPlayerPrefab;
 
+        private AudioSource _mainTrack;
         private Dictionary<string, AudioSource> _audioDictionary;
         
         private void Start()
         {
             _audioDictionary = new Dictionary<string, AudioSource>();
+        }
+        private void Update()
+        {
+            if (!_mainTrack)
+                return;
+            
+            // Send this to storage
+            var timePosition = _mainTrack.time;
+
+            DataStorage.MainTrackTimePositionMs = timePosition * 1000;
+            // Debug.Log($"Time for {_mainTrack.name} is {timePosition}");
+
+            // METHOD FOR STORING EVERY TRACK TIME
+            // for (var i = 0; i < _audioDictionary.Count; i++)
+            // {
+            //     var entry = _audioDictionary.ElementAt(i);
+            //
+            //     var src = entry.Value;
+            //     if (!src.isPlaying)
+            //         continue;
+            //     
+            //     var timePositionMs = src.time;
+            //     // Send this value to DataStorage
+            //     Debug.Log($"Time for {src.name} is {timePositionMs}");
+            // }
         }
 
         public void AddTrack(SoundData sound, bool play = true)
@@ -30,6 +57,9 @@ namespace Rhythm
             audioSrc.loop = sound.loop;
             
             _audioDictionary.Add(sound.sound_id, audioSrc);
+            
+            if (!_mainTrack)
+                SetMainTrack(sound.sound_id);
             
             if (play)
                 audioSrc.Play();
@@ -48,7 +78,12 @@ namespace Rhythm
             _audioDictionary.Remove(soundID);
         }
 
-
+        public void SetMainTrack(string soundID)
+        {
+            var src = GetAudioSource(soundID);
+            _mainTrack = src;
+        }
+        
         public AudioSource GetAudioSource(string soundID)
         {
             if (_audioDictionary.TryGetValue(soundID, out var src))

@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5886806044170925741}
-  - component: {fileID: 5372429711693739660}
+  - component: {fileID: 3691163793015902827}
   m_Layer: 0
-  m_Name: MusicPlayer
+  m_Name: Beat Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5372429711693739660
+--- !u!114 &3691163793015902827
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,6 +41,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 7930309036883101449}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a14f5b78262406549b42b49d10fc9099, type: 3}
+  m_Script: {fileID: 11500000, guid: f8a6a7115ff3f314fae0f365709f8c58, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Rhythm.MusicPlayer
+  m_EditorClassIdentifier: Assembly-CSharp::Rhythm._Referee.BeatManager
+  parameters:
+    trackPrefab: {fileID: 0}
+    soundsToPlay: []
+    bpm: 0
+    errorMarginMs: 0

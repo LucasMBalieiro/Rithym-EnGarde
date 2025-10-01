@@ -1,32 +1,34 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using NaughtyAttributes;
+using Rhythm.Storage;
+using Rhythm.Utils;
 using UnityEngine;
 using Utils;
 
-namespace Rhythm
+namespace Rhythm.Music_Player
 {
-    public class MusicPlayer : SingletonObj<MusicPlayer>
+    public class MusicPlayer
     {
-        [SerializeField] private AudioSource trackPlayerPrefab;
-
+        private AudioSource _trackPlayerPrefab;
+        private Transform _audioSrcRoot;
+        
         private AudioSource _mainTrack;
         private Dictionary<string, AudioSource> _audioDictionary;
         
-        private void Start()
+        public MusicPlayer(RhythmParameters parameters, Transform audioSrcRoot)
         {
+            _trackPlayerPrefab = parameters.trackPrefab;
+            _audioSrcRoot = audioSrcRoot;
+            
             _audioDictionary = new Dictionary<string, AudioSource>();
         }
-        private void Update()
+        public void Update()
         {
             if (!_mainTrack)
                 return;
             
-            // Send this to storage
-            var timePosition = _mainTrack.time;
-
-            DataStorage.MainTrackTimePositionMs = timePosition * 1000;
+            var timePosition = AudioSettings.dspTime;
+            DataStorage.MainTrackTimePositionMs = timePosition * 1000d;
             // Debug.Log($"Time for {_mainTrack.name} is {timePosition}");
 
             // METHOD FOR STORING EVERY TRACK TIME
@@ -44,6 +46,17 @@ namespace Rhythm
             // }
         }
 
+        public void OnDisable()
+        {
+            for (var i = 0; i < _audioDictionary.Count; i++)
+            {
+                var entry = _audioDictionary.ElementAt(i);
+
+                var src = entry.Value;
+                src.Pause();
+            }
+        }
+
         public void AddTrack(SoundData sound, bool play = true)
         {
             if (_audioDictionary.ContainsKey(sound.sound_id))
@@ -52,14 +65,17 @@ namespace Rhythm
                 return;
             }
             
-            var audioSrc = Instantiate(trackPlayerPrefab, this.transform);
+            var audioSrc = Object.Instantiate(_trackPlayerPrefab, _audioSrcRoot);
             audioSrc.clip = sound.audioClip;
             audioSrc.loop = sound.loop;
             
             _audioDictionary.Add(sound.sound_id, audioSrc);
-            
+
             if (!_mainTrack)
+            {
                 SetMainTrack(sound.sound_id);
+                return;
+            }
             
             if (play)
                 audioSrc.Play();
@@ -73,7 +89,7 @@ namespace Rhythm
             }
             
             PauseTrack(soundID);
-            Destroy(_audioDictionary[soundID].gameObject);
+            Object.Destroy(_audioDictionary[soundID].gameObject);
             
             _audioDictionary.Remove(soundID);
         }
@@ -82,6 +98,9 @@ namespace Rhythm
         {
             var src = GetAudioSource(soundID);
             _mainTrack = src;
+
+            DataStorage.MainTrackStartTime = AudioSettings.dspTime * 1000d;
+            _mainTrack.Play();
         }
         
         public AudioSource GetAudioSource(string soundID)

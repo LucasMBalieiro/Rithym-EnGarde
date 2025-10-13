@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 namespace Player
@@ -9,12 +10,19 @@ namespace Player
         Dashing = 2,
         Jumping = 3,
         Falling = 4,
+        Wallrunning = 5,
     }
     public class PlayerState : MonoBehaviour
     {
-        [field: SerializeField]
-        public PlayerMovementState CurrentPlayerMovementState { get; private set; } = PlayerMovementState.Idling;
+        [field: SerializeField] public PlayerMovementState CurrentPlayerMovementState { get; private set; } = PlayerMovementState.Idling;
 
+        [SerializeField] private TextMeshProUGUI textMesh;
+
+        private void Update()
+        {
+            textMesh.text = CurrentPlayerMovementState.ToString();
+        }
+        
         public void SetMovementState( PlayerMovementState newState )
         {
             CurrentPlayerMovementState = newState;
@@ -27,7 +35,7 @@ namespace Player
 
         public bool IsStateGroundedState(PlayerMovementState movementState)
         {
-            return movementState is PlayerMovementState.Idling or PlayerMovementState.Running or PlayerMovementState.Dashing;
+            return movementState is PlayerMovementState.Idling or PlayerMovementState.Running;
         }
     }
 }

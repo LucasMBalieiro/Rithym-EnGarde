@@ -9,6 +9,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject notePrefab;
     [SerializeField] private Transform spawnCrosshair;
     [SerializeField] private int poolSize = 20;
+    
+    [Header("Camera Sensitivity")] 
+    [SerializeField] private float cameraSensitivityX;
+    [SerializeField] private float cameraSensitivityY;
 
     private Queue<GameObject> noteQueue = new Queue<GameObject>();
 
@@ -41,5 +45,11 @@ public class GameManager : MonoBehaviour
     {
         note.SetActive(false);
         noteQueue.Enqueue(note);
+    }
+
+    public void GetCameraSensitivity(out float sensX, out float sensY)
+    {
+        sensX = cameraSensitivityX;
+        sensY = cameraSensitivityY;
     }
 }

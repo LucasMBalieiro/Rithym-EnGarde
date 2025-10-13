@@ -11,8 +11,14 @@ public class CameraController : MonoBehaviour
         _camera = GetComponent<Camera>();
     }
 
-    public void SetCameraFOV(float fov, float duration)
+    public void DoFov(float fov, float duration)
     {
         _camera.DOFieldOfView(fov, duration);
+    }
+    
+    public void DoTilt(float zTilt, float duration)
+    {
+        Debug.Log(zTilt);
+        transform.DOLocalRotate(new Vector3(0f, 0f, zTilt), duration);
     }
 }

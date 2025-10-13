@@ -15,7 +15,7 @@ namespace Player
         [SerializeField] private Camera playerCamera;
         [SerializeField] private float lookSensitivityX = 0.1f;
         [SerializeField] private float lookSensitivityY = 0.1f;
-        private CameraController _cameraController;
+        private CameraController cameraController;
         
         [Header("Movement")]
         [SerializeField] private LayerMask groundLayer;
@@ -27,48 +27,60 @@ namespace Player
         
         [SerializeField] private float jumpHeight;
         [SerializeField] private float gravity;
-        
-        [Header("Dash")]
-        [SerializeField] private float dashSpeed;
-        [SerializeField] private float dashDuration;
-        [SerializeField] private float dashCooldown;
-        private bool _canDash = true;
-        private bool _dashing;
+        private bool canDoubleJump = true;
         
         [Header("Crosshair")]
         [SerializeField] private RawImage targetCrosshairImage;
         
-        private float _verticalVelocity;
-        private float _antiBump;
-        private bool _jumpedLastFrame;
-        private float _stepOffset;
-        private PlayerMovementState _lastMovementState = PlayerMovementState.Falling;
+        private float verticalVelocity;
+        private float antiBump;
+        private bool jumpedLastFrame;
+        private float stepOffset;
+        private PlayerMovementState lastMovementState = PlayerMovementState.Falling;
         
-        
-        
-        private Vector2 _cameraRotation = Vector2.zero;
-        private Vector2 _playerTargetRotation = Vector2.zero;
+        private Vector2 cameraRotation = Vector2.zero;
+        private Vector2 playerTargetRotation = Vector2.zero;
 
-        private PlayerMoveInputs _playerMoveInputs;
-        private PlayerActionInputs _playerActionInputs;
-        private CharacterController _characterController;
-        private PlayerState _playerState;
+        private PlayerMoveInputs playerMoveInputs;
+        private PlayerActionInputs playerActionInputs;
+        private CharacterController characterController;
+        private PlayerState playerState;
+        
+        private PlayerDash playerDash;
+        [HideInInspector] public bool dashing = false;
+        
+        private PlayerWallrun playerWallrun;
+        [HideInInspector] public bool wallrun = false;
+        [HideInInspector] public bool wallrunningBuffer = false;
+        private Vector3 wallrunVelocity;
+        private Vector3 lateralJumpImpulse;
         
         public UnityEvent<float> onNoteHit;
         
         private void Awake()
         {
-            _characterController = GetComponent<CharacterController>();
-            _playerActionInputs = GetComponent<PlayerActionInputs>();
-            _playerMoveInputs = GetComponent<PlayerMoveInputs>();
-            _playerState = GetComponent<PlayerState>();
-            _cameraController = playerCamera.GetComponent<CameraController>();
+            characterController = GetComponent<CharacterController>();
+            playerActionInputs = GetComponent<PlayerActionInputs>();
+            playerMoveInputs = GetComponent<PlayerMoveInputs>();
+            playerState = GetComponent<PlayerState>();
+            cameraController = playerCamera.GetComponent<CameraController>();
             
-            _antiBump = runSpeed;
-            _stepOffset = _characterController.stepOffset;
+            playerDash = GetComponent<PlayerDash>();
+            playerWallrun = GetComponent<PlayerWallrun>();
+            
+            antiBump = runSpeed;
+            stepOffset = characterController.stepOffset;
             
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+            
+            Initialize();
+        }
+
+        private void Initialize()
+        {
+            playerDash.Initialize(playerCamera, cameraController);
+            playerWallrun.Initialize(playerCamera, cameraController, groundLayer);
         }
 
         private void Update()
@@ -76,9 +88,9 @@ namespace Player
             UpdateMovementState();
             HandleVerticalMovement();
             HandleLateralMovement();
+            HandleWallrunMovement();
             
             HandleAttackInput();
-            HandleDashInput();
         }
 
         private void LateUpdate()
@@ -88,9 +100,9 @@ namespace Player
         
         private void UpdateMovementState()
         {
-            _lastMovementState = _playerState.CurrentPlayerMovementState;
+            lastMovementState = playerState.CurrentPlayerMovementState;
             
-            bool isMovementInput = _playerMoveInputs.MovementInput != Vector2.zero;
+            bool isMovementInput = playerMoveInputs.MovementInput != Vector2.zero;
             bool isMovingLaterally = IsMovingLaterally();
             bool isGrounded = IsGrounded();
             
@@ -98,137 +110,140 @@ namespace Player
                 ? PlayerMovementState.Running
                 : PlayerMovementState.Idling;
             
-            lateralState = _dashing 
-                ? PlayerMovementState.Dashing 
-                : PlayerMovementState.Idling;
-            
-            _playerState.SetMovementState(lateralState);
+            playerState.SetMovementState(lateralState);
 
-            if((!isGrounded || _jumpedLastFrame) && _characterController.velocity.y > 0f)
+            if (isGrounded) canDoubleJump = true;
+            
+            if((!isGrounded || jumpedLastFrame) && characterController.velocity.y > 0f)
             {
-                _playerState.SetMovementState(PlayerMovementState.Jumping);
-                _jumpedLastFrame = false;
-                _characterController.stepOffset = 0f;
+                playerState.SetMovementState(PlayerMovementState.Jumping);
+                jumpedLastFrame = false;
+                characterController.stepOffset = 0f;
             }
-            else if((!isGrounded || _jumpedLastFrame) && _characterController.velocity.y <= 0f)
+            else if((!isGrounded || jumpedLastFrame) && characterController.velocity.y <= 0f)
             {
-                _playerState.SetMovementState(PlayerMovementState.Falling);
-                _jumpedLastFrame = false;
-                _characterController.stepOffset = 0f;
+                playerState.SetMovementState(PlayerMovementState.Falling);
+                jumpedLastFrame = false;
+                characterController.stepOffset = 0f;
             }
             else
             {
-                _characterController.stepOffset = _stepOffset;
+                characterController.stepOffset = stepOffset;
             }
+            
+            if(dashing) playerState.SetMovementState(PlayerMovementState.Dashing);
+            if(wallrun) playerState.SetMovementState(PlayerMovementState.Wallrunning);
         }
         
         private void HandleVerticalMovement()
         {
-            bool isGrounded = _playerState.InGroundedState();
-            
-            _verticalVelocity -= gravity * Time.deltaTime;
-            
-            if (isGrounded && _verticalVelocity < 0f)
+            if (wallrun)
             {
-                _verticalVelocity = -_antiBump;
+                verticalVelocity = 0;
+                return;
             }
             
-            if (_playerMoveInputs.JumpPressed && isGrounded)
+            bool isGrounded = playerState.InGroundedState();
+            
+            verticalVelocity -= gravity * Time.deltaTime;
+            
+            if (isGrounded && verticalVelocity < 0f)
             {
-                _verticalVelocity += Mathf.Sqrt(jumpHeight * 3 * gravity);
-                _jumpedLastFrame = true;
+                verticalVelocity = -antiBump;
             }
+            
+            Jump();
 
-            if (_playerState.IsStateGroundedState(_lastMovementState) && !isGrounded)
+            if (playerState.IsStateGroundedState(lastMovementState) && !isGrounded)
             {
-                _verticalVelocity += _antiBump;
+                verticalVelocity += antiBump;
             }
         }
         
         private void HandleLateralMovement()
         {
+            if (dashing || wallrun) return;
+            
             bool isGrounded = IsGrounded();
             float dragMagnitude = isGrounded ? drag : airDrag;
             float accelerationMagnitude = isGrounded ? runAcceleration : airAcceleration;
             
             Vector3 cameraForwardXZ = new Vector3(playerCamera.transform.forward.x, 0, playerCamera.transform.forward.z).normalized;
             Vector3 cameraRightXZ = new Vector3(playerCamera.transform.right.x, 0, playerCamera.transform.right.z).normalized;
-            Vector3 movementDirection = cameraRightXZ * _playerMoveInputs.MovementInput.x + cameraForwardXZ * _playerMoveInputs.MovementInput.y;
+            Vector3 movementDirection = cameraRightXZ * playerMoveInputs.MovementInput.x + cameraForwardXZ * playerMoveInputs.MovementInput.y;
             
             Vector3 movementDelta = movementDirection * (accelerationMagnitude * Time.deltaTime);
-            Vector3 newVelocity = _characterController.velocity + movementDelta;
+            Vector3 newVelocity = characterController.velocity + movementDelta;
             
             Vector3 currentDrag = newVelocity.normalized * (dragMagnitude * Time.deltaTime);
             newVelocity = (newVelocity.magnitude > dragMagnitude * Time.deltaTime) ? newVelocity - currentDrag : Vector3.zero;
             newVelocity = Vector3.ClampMagnitude(new Vector3(newVelocity.x, 0f, newVelocity.z), runSpeed);
-            newVelocity.y += _verticalVelocity;
+            newVelocity.y += verticalVelocity;
             newVelocity = !isGrounded ? HandleSteepWalls(newVelocity) : newVelocity;
             
-            _characterController.Move(newVelocity * Time.deltaTime);
+            newVelocity += lateralJumpImpulse;
+            lateralJumpImpulse = Vector3.zero; 
+            
+            characterController.Move(newVelocity * Time.deltaTime);
         }
-
-        private void HandleDashInput()
-        {
-            if (_playerMoveInputs.DashPressed && _canDash && _playerMoveInputs.MovementInput != Vector2.zero)
-            {
-                StartCoroutine(Dash(_playerMoveInputs.MovementInput));
-            }
-        }
-
-        private IEnumerator Dash(Vector2 playerInput)
-        {
-            Vector3 cameraForwardXZ = new Vector3(playerCamera.transform.forward.x, 0, playerCamera.transform.forward.z).normalized;
-            Vector3 cameraRightXZ = new Vector3(playerCamera.transform.right.x, 0, playerCamera.transform.right.z).normalized;
-            Vector3 dashDirection = (cameraRightXZ * playerInput.x + cameraForwardXZ * playerInput.y).normalized;
-            
-            _canDash = false;
-            _dashing = true;
-            _cameraController.SetCameraFOV(70, dashDuration/2);
-            
-            float startTime = Time.time;
-            
-            while (Time.time < startTime + dashDuration)
-            {
-                Vector3 dashMovement = dashDirection * dashSpeed;
-                dashMovement.y = _verticalVelocity;
         
-                _characterController.Move(dashMovement * Time.deltaTime);
-                
-                yield return null;
-            }
-            _cameraController.SetCameraFOV(60, dashDuration/2);
-            _dashing = false;
-            
-            yield return new WaitForSeconds(dashCooldown);
-            _canDash = true;
+        private void HandleWallrunMovement()
+        {
+            if (!wallrun) return;
+
+            characterController.Move(playerWallrun.GetWallRunVelocity() * Time.deltaTime);
         }
 
+        private void Jump()
+        {
+            if (playerMoveInputs.JumpPressed)
+            {
+                if (playerState.InGroundedState())
+                {
+                    jumpedLastFrame = true;
+                    verticalVelocity += Mathf.Sqrt(jumpHeight * 3 * gravity);
+                }
+                else if(!wallrunningBuffer && canDoubleJump && !wallrunningBuffer)
+                {
+                    verticalVelocity = 0;
+                    canDoubleJump = false;
+                    jumpedLastFrame = true;
+                    verticalVelocity += Mathf.Sqrt(jumpHeight * 3 * gravity);
+                }
+            }
+        }
+        
+        public void WallJump(Vector3 jumpDirection)
+        {
+            verticalVelocity = jumpDirection.y;
+            lateralJumpImpulse = new Vector3(jumpDirection.x, 0, jumpDirection.z);
+        }
+        
         private Vector3 HandleSteepWalls(Vector3 velocity)
         {
-            Vector3 normal = CharacterControllerUtils.GetNormalWithSphereCast(_characterController, groundLayer);
+            Vector3 normal = CharacterControllerUtils.GetNormalWithSphereCast(characterController, groundLayer);
             
             float angle = Vector3.Angle(normal, Vector3.up);
-            bool validAngle = angle <= _characterController.slopeLimit;
+            bool validAngle = angle <= characterController.slopeLimit;
 
-            if (!validAngle && _verticalVelocity < 0f) velocity = Vector3.ProjectOnPlane(velocity, normal);
+            if (!validAngle && verticalVelocity < 0f) velocity = Vector3.ProjectOnPlane(velocity, normal);
             
             return velocity;
         }
         
         private void HandleCameraMovement()
         {
-            _cameraRotation.x += lookSensitivityX * _playerMoveInputs.LookInput.x;
-            _cameraRotation.y = Mathf.Clamp(_cameraRotation.y - lookSensitivityY * _playerMoveInputs.LookInput.y, -89, 89);
-            
-            _playerTargetRotation.x += transform.eulerAngles.x + lookSensitivityX * _playerMoveInputs.LookInput.x;
-            transform.rotation = Quaternion.Euler(0f, _playerTargetRotation.x, 0f);
-            
-            playerCamera.transform.rotation = Quaternion.Euler(_cameraRotation.y, _cameraRotation.x, 0f);
+            cameraRotation.x += lookSensitivityX * playerMoveInputs.LookInput.x;
+            cameraRotation.y = Mathf.Clamp(cameraRotation.y - lookSensitivityY * playerMoveInputs.LookInput.y, -89, 89);
+            transform.localRotation = Quaternion.Euler(0f, cameraRotation.x, 0f);
+    
+            float currentTilt = playerCamera.transform.localEulerAngles.z;
+            playerCamera.transform.localRotation = Quaternion.Euler(cameraRotation.y, 0, currentTilt);
         }
 
         private void HandleAttackInput()
         {
-            if (_playerActionInputs.AttackPressed)
+            if (playerActionInputs.AttackPressed)
             {
                 if (Note.HittableNote)
                 {
@@ -271,31 +286,36 @@ namespace Player
 
         private bool IsMovingLaterally()
         {
-            Vector3 lateralVelocity = new Vector3(_characterController.velocity.x, 0f, _characterController.velocity.z);
+            Vector3 lateralVelocity = new Vector3(characterController.velocity.x, 0f, characterController.velocity.z);
 
             return lateralVelocity.magnitude > 0.01f;
         }
 
-        private bool IsGrounded()
+        public bool IsGrounded()
         {
-            return _playerState.InGroundedState() ? IsGroundedWhileGrounded() : IsGroundedWhileAirBorne();
+            return playerState.InGroundedState() ? IsGroundedWhileGrounded() : IsGroundedWhileAirBorne();
         }
 
         private bool IsGroundedWhileGrounded()
         {
-            Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - (_characterController.height/2), transform.position.z);
+            Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - (characterController.height/2), transform.position.z);
             
-            return Physics.CheckSphere(spherePosition, _characterController.radius, groundLayer, QueryTriggerInteraction.Ignore);
+            return Physics.CheckSphere(spherePosition, characterController.radius, groundLayer, QueryTriggerInteraction.Ignore);
         }
 
         private bool IsGroundedWhileAirBorne()
         {
-            Vector3 normal = CharacterControllerUtils.GetNormalWithSphereCast(_characterController, groundLayer);
+            Vector3 normal = CharacterControllerUtils.GetNormalWithSphereCast(characterController, groundLayer);
             
             float angle = Vector3.Angle(normal, Vector3.up);
-            bool validAngle = angle <= _characterController.slopeLimit;
+            bool validAngle = angle <= characterController.slopeLimit;
             
-            return _characterController.isGrounded && validAngle;
+            return characterController.isGrounded && validAngle;
+        }
+
+        public float GetVerticalVelocity()
+        {
+            return verticalVelocity;
         }
     }
 }

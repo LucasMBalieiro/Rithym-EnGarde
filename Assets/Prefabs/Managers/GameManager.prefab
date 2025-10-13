@@ -47,3 +47,5 @@ MonoBehaviour:
   notePrefab: {fileID: 2776939319350365571, guid: 527e0dae66706ed49b2b132dd36dbbce, type: 3}
   spawnCrosshair: {fileID: 0}
   poolSize: 20
+  cameraSensitivityX: 30
+  cameraSensitivityY: 30

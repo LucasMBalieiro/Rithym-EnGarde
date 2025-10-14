@@ -5,6 +5,7 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     private Camera _camera;
+    private Tween tiltTween;
 
     private void Start()
     {
@@ -18,7 +19,7 @@ public class CameraController : MonoBehaviour
     
     public void DoTilt(float zTilt, float duration)
     {
-        Debug.Log(zTilt);
-        transform.DOLocalRotate(new Vector3(0f, 0f, zTilt), duration);
+        tiltTween?.Kill();
+        tiltTween = transform.DOLocalRotate(new Vector3(0f, 0f, zTilt), duration);
     }
 }

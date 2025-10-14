@@ -9,7 +9,7 @@ public class PlayerWallrun : MonoBehaviour
     [SerializeField] private LayerMask wallLayerMask;
     private LayerMask groundLayerMask;
     [SerializeField] private float wallCheckDistance;
-    [SerializeField] private float minCharacterHeightMultiplier;
+    [SerializeField] private float minGroundDistance;
     
     [Header("Wall Running")]
     [SerializeField] private float wallrunSpeed;
@@ -74,9 +74,7 @@ public class PlayerWallrun : MonoBehaviour
     
     private bool IsGrounded()
     {
-        Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - (characterController.height * minCharacterHeightMultiplier), transform.position.z);
-            
-        return Physics.CheckSphere(spherePosition, characterController.radius, groundLayerMask, QueryTriggerInteraction.Ignore);
+        return Physics.Raycast(transform.position, Vector3.down, minGroundDistance, groundLayerMask);
     }
     
     private void StateMachine()

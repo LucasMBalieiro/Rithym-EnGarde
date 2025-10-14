@@ -284,6 +284,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player.PlayerState
   <CurrentPlayerMovementState>k__BackingField: 0
+  textMesh: {fileID: 0}
 --- !u!114 &7784703453342940828
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -315,12 +316,12 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   wallCheckDistance: 0.7
-  minCharacterHeightMultiplier: 0.8
+  minGroundDistance: 2.4
   wallrunSpeed: 12
   stickToWallForce: 10
   wallJumpUpForce: 10
   wallJumpSideForce: 14
-  exitWallTime: 0.4
+  exitWallTime: 0.2
 --- !u!1 &6243027459627684839
 GameObject:
   m_ObjectHideFlags: 0

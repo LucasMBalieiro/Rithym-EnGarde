@@ -69,14 +69,14 @@ Material:
     - _AtmosphereThickness: 3.18
     - _BumpScale: 1
     - _CloudAnisotropy: 0.5
-    - _CloudBaseHeight: 0.176
+    - _CloudBaseHeight: 0.095
     - _CloudCoverage: 1
     - _CloudLightIntensity: 2.5
     - _CloudOffsetX: 0
     - _CloudRotationX: 0
     - _CloudRotationY: 168
     - _CloudScale: 2
-    - _CloudSeed: 100
+    - _CloudSeed: 404
     - _CloudSoftness: 0.2
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1

@@ -17,32 +17,45 @@ namespace Rhythm._Referee
         private Metronome _metronome;
         private RhythmJudge _judge;
 
-        private void Start()
+        public static event Action BeatEnter, BeatExit;
+        public static event Action<bool> AttackOnBeat;
+        
+        private void OnEnable()
         {
-            DataStorage.InitializeStorage(parameters.parameters);
+            var rhythmParam = parameters.parameters;
             
-            _musicPlayer = new MusicPlayer(parameters.parameters, this.transform);
-            _metronome = new Metronome(parameters.parameters);
-            _judge = new RhythmJudge(parameters.parameters);
+            DataStorage.InitializeStorage(rhythmParam);
             
-            _musicPlayer.AddTrack(parameters.parameters.soundsToPlay[0]);
-            _metronome.ToggleIsCounting(true);
+            _musicPlayer = new MusicPlayer(rhythmParam, this.transform);
+            _metronome = new Metronome(rhythmParam);
+            _judge = new RhythmJudge(rhythmParam);
         }
-
-        private void Update()
-        {
-            _musicPlayer.Update();
-            _metronome.Update();
-            
-            // Probably should put this in a timer instead
-            _judge.ResetAction();
-        }
-
         private void OnDisable()
         {
             _judge.OnDisable();
             _metronome.OnDisable();
             _musicPlayer.OnDisable();
+            DataStorage.Cleanup();
+        }
+        
+        private void Start()
+        {
+            this.OnEnable();
+
+            // Rude initialization, change later
+            var baseTrack = DataStorage.Parameters.soundsToPlay[0];
+            _musicPlayer.AddTrack(baseTrack);
+            _metronome.ToggleIsCounting(true);
+        }
+
+        public static void CallBeatEnter() => BeatEnter?.Invoke();
+        public static void CallBeatExit() => BeatExit?.Invoke();
+        public static void CallAttack(bool onBeat) => AttackOnBeat?.Invoke(onBeat);
+        
+        private void Update()
+        {
+            _musicPlayer.Update();
+            _metronome.Update();
         }
     }
 }

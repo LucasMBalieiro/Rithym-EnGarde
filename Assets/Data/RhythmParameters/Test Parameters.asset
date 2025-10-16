@@ -19,6 +19,6 @@ MonoBehaviour:
       name: En Garde
       audioClip: {fileID: 8300000, guid: b50ad88b2e3e9b24e83a360ae22c193c, type: 3}
       loop: 1
-    bpm: 100
+    bpm: 120
     errorMarginMs: 80
     inputCooldown: 0

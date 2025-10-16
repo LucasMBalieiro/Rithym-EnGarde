@@ -1,4 +1,5 @@
 using System;
+using Rhythm._Referee;
 using Rhythm.Storage;
 using Rhythm.Utils;
 using UnityEngine;
@@ -24,9 +25,6 @@ namespace Rhythm.Beat_Metronome
         private double StartBeatPosition => _nextBeatPosition - _errorMarginInMs;
         private double EndBeatPosition => _nextBeatPosition + _errorMarginInMs;
     
-        // Events
-        public static event Action EnterBeat, ExitBeat;
-    
         public Metronome(RhythmParameters parameters)
         {
             _bpm = parameters.bpm;
@@ -42,7 +40,7 @@ namespace Rhythm.Beat_Metronome
             ToggleIsCounting(false);
             
             _isBeatActive = false;
-            ExitBeat?.Invoke();
+            BeatManager.CallBeatExit();
         }
 
         public void ToggleIsCounting(bool toggle)
@@ -60,14 +58,14 @@ namespace Rhythm.Beat_Metronome
             if (!_isBeatActive && musicTime > StartBeatPosition)
             {
                 _isBeatActive = true;
-                EnterBeat?.Invoke();
+                BeatManager.CallBeatEnter();
                 
                 // Debug.Log($"Beat! at {musicTime}ms.\nBeat window opened at {StartBeatPosition}\nBeat window closes in {EndBeatPosition - musicTime}ms");
             }
             else if (_isBeatActive && musicTime > EndBeatPosition)
             {
                 _isBeatActive = false;
-                ExitBeat?.Invoke();
+                BeatManager.CallBeatExit();
             
                 _nextBeatPosition += BeatDurationMs;
 

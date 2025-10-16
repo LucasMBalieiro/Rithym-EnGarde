@@ -1,3 +1,4 @@
+using Rhythm._Referee;
 using Rhythm.Beat_Metronome;
 using Rhythm.Utils;
 using UnityEngine;
@@ -22,16 +23,16 @@ namespace Rhythm.Storage
             MainTrackTimePositionMs = 0;
             ActiveBeat = false;
             
-            Metronome.EnterBeat += SetActiveBeat;
-            Metronome.ExitBeat  += ResetActiveBeat;
+            BeatManager.BeatEnter += SetActiveBeat;
+            BeatManager.BeatExit  += ResetActiveBeat;
         }
 
         private static void SetActiveBeat() => ActiveBeat = true;
         private static void ResetActiveBeat() => ActiveBeat = false;
         public static void Cleanup()
         {
-            Metronome.EnterBeat -= SetActiveBeat;
-            Metronome.ExitBeat  -= SetActiveBeat;
+            BeatManager.BeatEnter -= SetActiveBeat;
+            BeatManager.BeatExit  -= ResetActiveBeat;
         }
     }
 }

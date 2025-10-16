@@ -1,4 +1,7 @@
+using System;
 using Player;
+using Rhythm._Referee;
+using Rhythm.Beat_Metronome;
 using Rhythm.Storage;
 using Rhythm.Utils;
 using UnityEngine;
@@ -24,6 +27,8 @@ namespace Rhythm.Rhythm_Judge
             
             PlayerControls.PlayerActionMap.Enable();
             PlayerControls.PlayerActionMap.SetCallbacks(this);
+
+            BeatManager.BeatExit += ResetAction;
         }
         
         public void OnDisable()
@@ -31,7 +36,6 @@ namespace Rhythm.Rhythm_Judge
             PlayerControls.PlayerActionMap.Disable();
             PlayerControls.PlayerActionMap.RemoveCallbacks(this);
         }
-
         
         public void OnAttack(InputAction.CallbackContext context)
         {
@@ -43,15 +47,8 @@ namespace Rhythm.Rhythm_Judge
             _inputTriggered = true;
             
             var onBeat = DataStorage.ActiveBeat;
-            if (onBeat)
-            {
-                Debug.Log("Input on beat");
-            }
-            else
-            {
-                Debug.Log("Input out of beat");
-            }
+            BeatManager.CallAttack(onBeat);
         }
-        public void ResetAction() => _inputTriggered = false;
+        private void ResetAction() => _inputTriggered = false;
     }
 }

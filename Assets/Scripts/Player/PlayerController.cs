@@ -75,7 +75,7 @@ namespace Player
 
         private void Initialize()
         {
-            playerDash.Initialize(playerCamera, cameraController);
+            playerDash.Initialize(playerCamera, cameraController, playerState);
             playerWallrun.Initialize(playerCamera, cameraController, groundLayer);
         }
 

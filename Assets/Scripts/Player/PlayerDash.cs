@@ -17,11 +17,13 @@ public class PlayerDash : MonoBehaviour
     private PlayerMoveInputs playerMoveInputs;
     private CharacterController characterController;
     private PlayerController playerController;
+    private PlayerState playerState;
 
-    public void Initialize(Camera pCamera, CameraController camController)
+    public void Initialize(Camera pCamera, CameraController camController, PlayerState pState)
     {
         playerCamera = pCamera;
         cameraController = camController;
+        playerState = pState;
     }
 
     private void Start()
@@ -47,7 +49,7 @@ public class PlayerDash : MonoBehaviour
     
     private void HandleDashInput()
     {
-        if (playerMoveInputs.DashPressed && canDash && dashCooldownTimer && playerMoveInputs.MovementInput != Vector2.zero)
+        if (playerMoveInputs.DashPressed && canDash && dashCooldownTimer && playerMoveInputs.MovementInput != Vector2.zero && playerState.CurrentPlayerMovementState != PlayerMovementState.Wallrunning)
         {
             StartCoroutine(Dash(playerMoveInputs.MovementInput));
         }

@@ -228,8 +228,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   playerCamera: {fileID: 8411748980171139100}
-  lookSensitivityX: 0.1
-  lookSensitivityY: 0.1
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -240,13 +238,9 @@ MonoBehaviour:
   airDrag: 0
   jumpHeight: 1
   gravity: 35
-  targetCrosshairImage: {fileID: 0}
   dashing: 0
   wallrun: 0
   wallrunningBuffer: 0
-  onNoteHit:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &8576565983196805697
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -266,7 +260,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4898487816726613923}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 17fb4253f8adec241ae2e4ff0731fe2e, type: 3}
   m_Name: 

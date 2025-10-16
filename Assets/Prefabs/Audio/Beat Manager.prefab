@@ -44,8 +44,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8a6a7115ff3f314fae0f365709f8c58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Rhythm._Referee.BeatManager
-  parameters:
-    trackPrefab: {fileID: 0}
-    soundsToPlay: []
-    bpm: 0
-    errorMarginMs: 0
+  parameters: {fileID: 11400000, guid: 7a3cfa2f89263bb418d6e6b39f0508c4, type: 2}

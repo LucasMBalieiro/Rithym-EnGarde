@@ -13,24 +13,22 @@ namespace Player
     {
         [Header("Camera")]
         [SerializeField] private Camera playerCamera;
-        [SerializeField] private float lookSensitivityX = 0.1f;
-        [SerializeField] private float lookSensitivityY = 0.1f;
+        private float lookSensitivityX;
+        private float lookSensitivityY;
         private CameraController cameraController;
         
-        [Header("Movement")]
+        [Header("Ground Movement")]
         [SerializeField] private LayerMask groundLayer;
         [SerializeField] private float runSpeed;
         [SerializeField] private float runAcceleration;
         [SerializeField] private float drag;
+        
+        [Header("Air Movement")]
         [SerializeField] private float airAcceleration;
         [SerializeField] private float airDrag;
-        
         [SerializeField] private float jumpHeight;
         [SerializeField] private float gravity;
         private bool canDoubleJump = true;
-        
-        [Header("Crosshair")]
-        [SerializeField] private RawImage targetCrosshairImage;
         
         private float verticalVelocity;
         private float antiBump;
@@ -42,7 +40,6 @@ namespace Player
         private Vector2 playerTargetRotation = Vector2.zero;
 
         private PlayerMoveInputs playerMoveInputs;
-        private PlayerActionInputs playerActionInputs;
         private CharacterController characterController;
         private PlayerState playerState;
         
@@ -55,12 +52,9 @@ namespace Player
         private Vector3 wallrunVelocity;
         private Vector3 lateralJumpImpulse;
         
-        public UnityEvent<float> onNoteHit;
-        
         private void Awake()
         {
             characterController = GetComponent<CharacterController>();
-            playerActionInputs = GetComponent<PlayerActionInputs>();
             playerMoveInputs = GetComponent<PlayerMoveInputs>();
             playerState = GetComponent<PlayerState>();
             cameraController = playerCamera.GetComponent<CameraController>();
@@ -73,6 +67,8 @@ namespace Player
             
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+            
+            GameManager.Instance.GetCameraSensitivity(out lookSensitivityX, out lookSensitivityY);
             
             Initialize();
         }
@@ -89,8 +85,6 @@ namespace Player
             HandleVerticalMovement();
             HandleLateralMovement();
             HandleWallrunMovement();
-            
-            HandleAttackInput();
         }
 
         private void LateUpdate()
@@ -239,49 +233,6 @@ namespace Player
     
             float currentTilt = playerCamera.transform.localEulerAngles.z;
             playerCamera.transform.localRotation = Quaternion.Euler(cameraRotation.y, 0, currentTilt);
-        }
-
-        private void HandleAttackInput()
-        {
-            if (playerActionInputs.AttackPressed)
-            {
-                if (Note.HittableNote)
-                {
-                    Note noteToHit = Note.HittableNote;
-
-                    noteToHit.RegisterHit();
-
-                    float accuracy = noteToHit.GetHitAccuracy();
-                    
-                    FlashCrosshair(accuracy);
-                    onNoteHit.Invoke(accuracy);
-                }
-                else
-                {
-                    Debug.Log("Miss");
-                    onNoteHit.Invoke(0f);
-                }
-            }
-        }
-        
-        private void FlashCrosshair(float accuracy)
-        {
-            Color accuracyColor;
-            targetCrosshairImage.DOKill();
-
-            if (accuracy >= .90)
-            {
-                accuracyColor = Color.yellow;
-                Debug.Log("Perfect");
-            }
-            else
-            {
-                accuracyColor = Color.red;
-                Debug.Log("Half hit");
-            }
-
-            targetCrosshairImage.color = accuracyColor;
-            targetCrosshairImage.DOColor(Color.white, 0.2f);
         }
 
         private bool IsMovingLaterally()

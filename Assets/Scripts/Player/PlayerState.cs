@@ -20,7 +20,9 @@ namespace Player
 
         private void Update()
         {
-            textMesh.text = CurrentPlayerMovementState.ToString();
+            //DEBUG
+            if(textMesh)
+                textMesh.text = CurrentPlayerMovementState.ToString();
         }
         
         public void SetMovementState( PlayerMovementState newState )

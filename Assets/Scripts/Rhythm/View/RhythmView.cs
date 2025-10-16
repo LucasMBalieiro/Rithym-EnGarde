@@ -26,23 +26,27 @@ namespace Rhythm.View
 
         private void ExpandReticle()
         {
-            aimReticle.transform.DOScale(1.4f, 0.0001f);
+            if (aimReticle)
+                aimReticle.transform.DOScale(1.4f, 0.0001f);
         }
 
         private void RetractReticle()
         {
-            aimReticle.transform.DOScale(1f, 0.0001f);
+            if (aimReticle)
+                aimReticle.transform.DOScale(1f, 0.0001f);
         }
 
         private void FeedbackInput(bool beat)
         {
-            aimReticle.color = (beat ? successColor : errorColor);
+            if (aimReticle)
+                aimReticle.color = (beat ? successColor : errorColor);
             Invoke(nameof(ResetReticleColor), .1f);
         }
 
         public void ResetReticleColor()
         {
-            aimReticle.color = defaultColor;
+            if (aimReticle)
+                aimReticle.color = defaultColor;
         }
     }
 }

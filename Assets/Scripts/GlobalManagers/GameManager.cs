@@ -6,11 +6,9 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance{get; private set;}
     
-    [SerializeField] private GameObject notePrefab;
-    [SerializeField] private Transform spawnCrosshair;
-    [SerializeField] private int poolSize = 20;
-
-    private Queue<GameObject> noteQueue = new Queue<GameObject>();
+    [Header("Camera Sensitivity")] 
+    [SerializeField] private float cameraSensitivityX;
+    [SerializeField] private float cameraSensitivityY;
 
     private void Awake()
     {
@@ -22,24 +20,11 @@ public class GameManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
         
-        for (int i = 0; i < poolSize; i++)
-        {
-            GameObject note = Instantiate(notePrefab, spawnCrosshair);
-            note.SetActive(false);
-            noteQueue.Enqueue(note);
-        }
     }
-    
-    public GameObject GetNote()
+
+    public void GetCameraSensitivity(out float sensX, out float sensY)
     {
-        GameObject note = noteQueue.Dequeue();
-        note.SetActive(true);
-        return note;
-    }
-    
-    public void ReturnNote(GameObject note)
-    {
-        note.SetActive(false);
-        noteQueue.Enqueue(note);
+        sensX = cameraSensitivityX;
+        sensY = cameraSensitivityY;
     }
 }

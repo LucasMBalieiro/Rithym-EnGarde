@@ -44,6 +44,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 952eae7403b8f044facdcccb1fcb3292, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  notePrefab: {fileID: 2776939319350365571, guid: 527e0dae66706ed49b2b132dd36dbbce, type: 3}
-  spawnCrosshair: {fileID: 0}
-  poolSize: 20
+  cameraSensitivityX: 0.1
+  cameraSensitivityY: 0.1

@@ -10,10 +10,13 @@ namespace Player
         public Vector2 MovementInput { get; private set; }
         public Vector2 LookInput { get; private set; }
         public bool JumpPressed { get; private set; }
+        
+        public bool DashPressed { get; private set; }
 
         private void LateUpdate()
         {
             JumpPressed = false;
+            DashPressed = false;
         }
 
         private void OnEnable()
@@ -46,6 +49,13 @@ namespace Player
             if(!context.performed) return;
 
             JumpPressed = true;
+        }
+
+        public void OnDash(InputAction.CallbackContext context)
+        {
+            if(!context.performed) return;
+            
+            DashPressed = true;
         }
     }
 }

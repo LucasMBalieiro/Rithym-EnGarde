@@ -120,6 +120,15 @@ namespace Player
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Dash"",
+                    ""type"": ""Button"",
+                    ""id"": ""daa69150-8668-4a09-93c2-a711cd2d5b08"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -320,6 +329,39 @@ namespace Player
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d5a81e4e-bb63-45c7-bfb8-1023dd4c9c92"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Dash"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dfec8d18-3194-4f35-80b6-cfd0c135eab5"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Dash"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d9e5eb55-9dfc-4ccf-9ed0-aa67cedb7a1d"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Dash"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -370,6 +412,7 @@ namespace Player
             m_PlayerMovementMap_Movement = m_PlayerMovementMap.FindAction("Movement", throwIfNotFound: true);
             m_PlayerMovementMap_Look = m_PlayerMovementMap.FindAction("Look", throwIfNotFound: true);
             m_PlayerMovementMap_Jump = m_PlayerMovementMap.FindAction("Jump", throwIfNotFound: true);
+            m_PlayerMovementMap_Dash = m_PlayerMovementMap.FindAction("Dash", throwIfNotFound: true);
             // PlayerActionMap
             m_PlayerActionMap = asset.FindActionMap("PlayerActionMap", throwIfNotFound: true);
             m_PlayerActionMap_Attack = m_PlayerActionMap.FindAction("Attack", throwIfNotFound: true);
@@ -457,6 +500,7 @@ namespace Player
         private readonly InputAction m_PlayerMovementMap_Movement;
         private readonly InputAction m_PlayerMovementMap_Look;
         private readonly InputAction m_PlayerMovementMap_Jump;
+        private readonly InputAction m_PlayerMovementMap_Dash;
         /// <summary>
         /// Provides access to input actions defined in input action map "PlayerMovementMap".
         /// </summary>
@@ -480,6 +524,10 @@ namespace Player
             /// Provides access to the underlying input action "PlayerMovementMap/Jump".
             /// </summary>
             public InputAction @Jump => m_Wrapper.m_PlayerMovementMap_Jump;
+            /// <summary>
+            /// Provides access to the underlying input action "PlayerMovementMap/Dash".
+            /// </summary>
+            public InputAction @Dash => m_Wrapper.m_PlayerMovementMap_Dash;
             /// <summary>
             /// Provides access to the underlying input action map instance.
             /// </summary>
@@ -515,6 +563,9 @@ namespace Player
                 @Jump.started += instance.OnJump;
                 @Jump.performed += instance.OnJump;
                 @Jump.canceled += instance.OnJump;
+                @Dash.started += instance.OnDash;
+                @Dash.performed += instance.OnDash;
+                @Dash.canceled += instance.OnDash;
             }
 
             /// <summary>
@@ -535,6 +586,9 @@ namespace Player
                 @Jump.started -= instance.OnJump;
                 @Jump.performed -= instance.OnJump;
                 @Jump.canceled -= instance.OnJump;
+                @Dash.started -= instance.OnDash;
+                @Dash.performed -= instance.OnDash;
+                @Dash.canceled -= instance.OnDash;
             }
 
             /// <summary>
@@ -692,6 +746,13 @@ namespace Player
             /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
             void OnJump(InputAction.CallbackContext context);
+            /// <summary>
+            /// Method invoked when associated input action "Dash" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// </summary>
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+            void OnDash(InputAction.CallbackContext context);
         }
         /// <summary>
         /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "PlayerActionMap" which allows adding and removing callbacks.

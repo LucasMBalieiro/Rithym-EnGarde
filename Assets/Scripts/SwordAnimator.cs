@@ -8,8 +8,8 @@ public class SwordAnimator : MonoBehaviour
     [SerializeField] private Transform idlePosition; // Posição inicial (pai vazio que guarda a pose de idle)
     [SerializeField] private Transform target;       // Transform do alvo
     [SerializeField] private float stabDuration = 0.2f;
-    [SerializeField] private float returnDuration = 0.25f;
-    [SerializeField] private float overshoot = 0.1f; // Quanto passar do alvo (opcional, para dar impacto)
+    //[SerializeField] private float returnDuration = 0.25f;
+    //[SerializeField] private float overshoot = 0.1f; // Quanto passar do alvo (opcional, para dar impacto)
 
     private Tween currentTween;
 

@@ -1,3 +1,4 @@
+using System;
 using DG.Tweening;
 using Rhythm._Referee;
 using UnityEngine;
@@ -15,13 +16,20 @@ namespace Rhythm.View
         [SerializeField] private Color successColor;
         [SerializeField] private Color errorColor;
         
-        private void Start()
+        private void OnEnable()
         {
             ResetReticleColor();
             
             BeatManager.BeatEnter += ExpandReticle;
             BeatManager.BeatExit += RetractReticle;
             BeatManager.AttackOnBeat += FeedbackInput;
+        }
+
+        private void OnDisable()
+        {
+            BeatManager.BeatEnter -= ExpandReticle;
+            BeatManager.BeatExit -= RetractReticle;
+            BeatManager.AttackOnBeat -= FeedbackInput;
         }
 
         private void ExpandReticle()

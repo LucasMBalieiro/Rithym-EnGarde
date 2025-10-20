@@ -12,6 +12,8 @@ namespace Rhythm.Rhythm_Judge
 {
     public class RhythmJudge : PlayerControls.IPlayerActionMapActions
     {
+        // TODO TIRAR LÓGICA DE INPUT DAQUI, MOVER PARA CLASSE RESPONSÁVEL PRÓPRIA
+        
         public PlayerControls PlayerControls { get; private set; }
 
         private bool _inputTriggered;
@@ -36,6 +38,13 @@ namespace Rhythm.Rhythm_Judge
             PlayerControls.PlayerActionMap.Disable();
             PlayerControls.PlayerActionMap.RemoveCallbacks(this);
         }
+
+        public bool IsOnBeat()
+        {
+            var onBeat = DataStorage.ActiveBeat;
+            BeatManager.CallInputEvent(onBeat);
+            return onBeat;
+        }
         
         public void OnAttack(InputAction.CallbackContext context)
         {
@@ -47,7 +56,7 @@ namespace Rhythm.Rhythm_Judge
             _inputTriggered = true;
             
             var onBeat = DataStorage.ActiveBeat;
-            BeatManager.CallAttack(onBeat);
+            BeatManager.CallInputEvent(onBeat);
         }
         private void ResetAction() => _inputTriggered = false;
     }

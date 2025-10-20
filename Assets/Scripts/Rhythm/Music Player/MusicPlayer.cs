@@ -29,21 +29,6 @@ namespace Rhythm.Music_Player
             
             var timePosition = AudioSettings.dspTime;
             DataStorage.MainTrackTimePositionMs = timePosition * 1000d;
-            // Debug.Log($"Time for {_mainTrack.name} is {timePosition}");
-
-            // METHOD FOR STORING EVERY TRACK TIME
-            // for (var i = 0; i < _audioDictionary.Count; i++)
-            // {
-            //     var entry = _audioDictionary.ElementAt(i);
-            //
-            //     var src = entry.Value;
-            //     if (!src.isPlaying)
-            //         continue;
-            //     
-            //     var timePositionMs = src.time;
-            //     // Send this value to DataStorage
-            //     Debug.Log($"Time for {src.name} is {timePositionMs}");
-            // }
         }
 
         public void OnDisable()

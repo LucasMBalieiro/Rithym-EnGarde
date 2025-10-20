@@ -22,14 +22,14 @@ namespace Rhythm.View
             
             BeatManager.BeatEnter += ExpandReticle;
             BeatManager.BeatExit += RetractReticle;
-            BeatManager.AttackOnBeat += FeedbackInput;
+            BeatManager.InputOnBeat += FeedbackInput;
         }
 
         private void OnDisable()
         {
             BeatManager.BeatEnter -= ExpandReticle;
             BeatManager.BeatExit -= RetractReticle;
-            BeatManager.AttackOnBeat -= FeedbackInput;
+            BeatManager.InputOnBeat -= FeedbackInput;
         }
 
         private void ExpandReticle()

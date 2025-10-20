@@ -5,7 +5,7 @@ using UnityEngine.Serialization;
 
 namespace Rhythm.Utils
 {
-    [CreateAssetMenu(fileName = "Rhythm Parameters", menuName = "Rhythm/New Parameters")]
+    [CreateAssetMenu(fileName = "Rhythm Parameters", menuName = "Parameters/Rhythm Parameters")]
     public class ParametersScriptable : ScriptableObject
     {
         [ReadOnly] public Guid ID = Guid.NewGuid();

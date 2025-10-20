@@ -18,7 +18,7 @@ namespace Rhythm._Referee
         private RhythmJudge _judge;
 
         public static event Action BeatEnter, BeatExit;
-        public static event Action<bool> AttackOnBeat;
+        public static event Action<bool> InputOnBeat;
         
         private void OnEnable()
         {
@@ -50,12 +50,17 @@ namespace Rhythm._Referee
 
         public static void CallBeatEnter() => BeatEnter?.Invoke();
         public static void CallBeatExit() => BeatExit?.Invoke();
-        public static void CallAttack(bool onBeat) => AttackOnBeat?.Invoke(onBeat);
+        public static void CallInputEvent(bool onBeat) => InputOnBeat?.Invoke(onBeat);
         
         private void Update()
         {
             _musicPlayer.Update();
             _metronome.Update();
+        }
+
+        public bool CheckOnBeat()
+        {
+            return _judge.IsOnBeat();
         }
     }
 }

@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3a006230d654184886997a66d239c28, type: 3}
+  m_Name: RockVisualData
+  m_EditorClassIdentifier: Assembly-CSharp::OffhandVisualDataSO
+  pickupSound: {fileID: 8300000, guid: 9060f10c14213c84ebe5a97cb579a6fd, type: 3}
+  throwSound: {fileID: 8300000, guid: 658b74de4eda15a4da5f99bf8b861b87, type: 3}
+  onHitSound: {fileID: 8300000, guid: c16b0b21f34ab7d49ac3c1f80acc0b99, type: 3}

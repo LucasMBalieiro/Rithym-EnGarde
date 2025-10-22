@@ -58,6 +58,23 @@ namespace Rhythm.Rhythm_Judge
             var onBeat = DataStorage.ActiveBeat;
             BeatManager.CallInputEvent(onBeat);
         }
+
+        public void OnInteract(InputAction.CallbackContext context)
+        {
+            //é... realmente tem que tirar daqui esse bglh
+            return; 
+        }
+
+        public void OnThrow(InputAction.CallbackContext context)
+        {
+            return;
+        }
+
+        public void OnDrop(InputAction.CallbackContext context)
+        {
+            return;
+        }
+
         private void ResetAction() => _inputTriggered = false;
     }
 }

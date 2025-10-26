@@ -19,13 +19,13 @@ namespace Combat.Attack.Data.Scriptables
     
         [Space(10)]
         [ShowIf(nameof(shape), OverlapShape.Sphere)]
-        public int sphereRadius;
+        public float sphereRadius;
     
         [Space(10)]
         [ShowIf(nameof(shape), OverlapShape.Capsule)]
         public Vector3 centerSphereStart, centerSphereEnd;
         [ShowIf(nameof(shape), OverlapShape.Capsule)]
-        public int capsuleRadius;
+        public float capsuleRadius;
 
         
         [Space(10)]

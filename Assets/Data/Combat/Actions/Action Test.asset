@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2bc828a76c02d6446a8959f27f959a8c, type: 3}
   m_Name: Action Test
   m_EditorClassIdentifier: Combat::ActionScriptable
-  attackDamage: 0
+  attackDamage: 10
   attackAnimation: {fileID: 0}
   attackSoundEffect: {fileID: 0}

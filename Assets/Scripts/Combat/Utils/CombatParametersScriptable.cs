@@ -1,5 +1,5 @@
 using System;
-using Unity.Collections;
+using NaughtyAttributes;
 using UnityEngine;
 
 namespace Combat.Utils

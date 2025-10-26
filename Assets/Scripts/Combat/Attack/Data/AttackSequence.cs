@@ -13,7 +13,7 @@ namespace Combat.Attack.Data
             AtkSequence = new List<AttackScriptable>(capacity: sequenceSize);
             AtkSequence.AddRange(attacks);
             
-            _atkCurrentStep = 0;
+            _atkCurrentStep = -1;
         }
 
         public void AddAttackToSequence(AttackScriptable attack, int idxToInsert)
@@ -21,10 +21,12 @@ namespace Combat.Attack.Data
         public void RemoveAttackFromSequence(int idxToRemove)
         { AtkSequence.RemoveAt(idxToRemove); }
         
-        public AttackScriptable GetCurrentAttack() => AtkSequence[_atkCurrentStep];
+        private AttackScriptable GetCurrentAttack() => AtkSequence[_atkCurrentStep];
         public AttackScriptable NextAttack()
         {
             _atkCurrentStep++;
+            if (_atkCurrentStep >= AtkSequence.Count)
+                _atkCurrentStep = 0;
             return GetCurrentAttack();
         }
         public AttackScriptable ResetAttackSequence()

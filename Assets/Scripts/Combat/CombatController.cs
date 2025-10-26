@@ -1,16 +1,100 @@
+using System;
+using System.Collections.Generic;
+using Combat.Attack._Manager;
+using Combat.Attack.Data;
+using Combat.Attack.Data.Scriptables;
+using Combat.Utils;
+using Player;
+using Rhythm._Referee;
+using Rhythm.Rhythm_Judge;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using Utils;
 
-public class CombatController : MonoBehaviour
+public class CombatController : SingletonObj<CombatController>, PlayerControls.IPlayerActionMapActions
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public PlayerControls PlayerControls { get; private set; }
+
+    // Parameters
+    [SerializeField] private CombatParametersScriptable parameters;
+    [SerializeField] private Transform hitPosition;
+    [SerializeField] private List<AttackScriptable> attacks;
+
+    [Space(20)] 
+    [SerializeField] private bool attackGizmosActive;
+    
+    // Managers
+    private AttackManager _attackManager;
+
+    // Control variables
+    private bool _inputTriggered;
+    
+    private void OnEnable()
     {
+        CombatDataStorage.InitializeStorage(parameters.Parameters);
         
+        // Initialize managers
+        _attackManager = new AttackManager(hitPosition);
+        
+        EnableInputMap();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnDisable()
     {
+        DisableInputMap();
         
+        // Disable managers
+        _attackManager.OnDisable();
+        
+        CombatDataStorage.Cleanup();
     }
+
+    private void Start()
+    {
+        // Rude initialization, change later
+        CombatDataStorage.AtkSequence = new AttackSequence(attacks.Count, attacks.ToArray());
+    }
+
+    public void OnAttack(InputAction.CallbackContext context)
+    {
+        if (!context.performed)
+            return;
+        if (_inputTriggered)
+            return;
+
+        _inputTriggered = true;
+        
+        var onBeat = BeatManager.Instance.CheckOnBeat();
+        CombatDataStorage.AttackIsOnBeat = onBeat;
+        _attackManager.HandleAttack();
+        
+        _inputTriggered = false;
+    }
+
+    private void Update()
+    {
+        _attackManager.Update();
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (attackGizmosActive)
+            _attackManager?.DrawGizmos();
+    }
+
+    #region InitializeInputMap
+    private void EnableInputMap()
+    {
+        PlayerControls = new PlayerControls();
+        PlayerControls.Enable();
+        
+        PlayerControls.PlayerActionMap.Enable();
+        PlayerControls.PlayerActionMap.SetCallbacks(this);
+    }
+    private void DisableInputMap()
+    {
+        PlayerControls.PlayerActionMap.Disable();
+        PlayerControls.PlayerActionMap.RemoveCallbacks(this);
+    }
+    #endregion
 }

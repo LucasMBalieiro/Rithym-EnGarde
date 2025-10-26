@@ -28,7 +28,7 @@ namespace Rhythm.Music_Player
                 return;
             
             var timePosition = AudioSettings.dspTime;
-            DataStorage.MainTrackTimePositionMs = timePosition * 1000d;
+            RhythmDataStorage.MainTrackTimePositionMs = timePosition * 1000d;
         }
 
         public void OnDisable()
@@ -84,7 +84,7 @@ namespace Rhythm.Music_Player
             var src = GetAudioSource(soundID);
             _mainTrack = src;
 
-            DataStorage.MainTrackStartTime = AudioSettings.dspTime * 1000d;
+            RhythmDataStorage.MainTrackStartTime = AudioSettings.dspTime * 1000d;
             _mainTrack.Play();
         }
         

@@ -24,7 +24,7 @@ namespace Rhythm._Referee
         {
             var rhythmParam = parameters.parameters;
             
-            DataStorage.InitializeStorage(rhythmParam);
+            RhythmDataStorage.InitializeStorage(rhythmParam);
             
             _musicPlayer = new MusicPlayer(rhythmParam, this.transform);
             _metronome = new Metronome(rhythmParam);
@@ -35,15 +35,13 @@ namespace Rhythm._Referee
             _judge.OnDisable();
             _metronome.OnDisable();
             _musicPlayer.OnDisable();
-            DataStorage.Cleanup();
+            RhythmDataStorage.Cleanup();
         }
         
         private void Start()
         {
-            this.OnEnable();
-
             // Rude initialization, change later
-            var baseTrack = DataStorage.Parameters.soundsToPlay[0];
+            var baseTrack = RhythmDataStorage.Parameters.soundsToPlay[0];
             _musicPlayer.AddTrack(baseTrack);
             _metronome.ToggleIsCounting(true);
         }

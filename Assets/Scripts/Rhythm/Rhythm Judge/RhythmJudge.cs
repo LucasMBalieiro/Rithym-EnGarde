@@ -41,7 +41,7 @@ namespace Rhythm.Rhythm_Judge
 
         public bool IsOnBeat()
         {
-            var onBeat = DataStorage.ActiveBeat;
+            var onBeat = RhythmDataStorage.ActiveBeat;
             BeatManager.CallInputEvent(onBeat);
             return onBeat;
         }
@@ -55,7 +55,7 @@ namespace Rhythm.Rhythm_Judge
 
             _inputTriggered = true;
             
-            var onBeat = DataStorage.ActiveBeat;
+            var onBeat = RhythmDataStorage.ActiveBeat;
             BeatManager.CallInputEvent(onBeat);
         }
         private void ResetAction() => _inputTriggered = false;

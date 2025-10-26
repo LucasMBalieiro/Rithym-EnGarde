@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f462f12172660f344bf6d1f80527ef2a, type: 3}
-  m_Name: HitShape Test
-  m_EditorClassIdentifier: Combat::Combat.Attack.Data.Scriptables.HitDetectionScriptable
-  shape: 2
-  boxSize: {x: 0, y: 0, z: 0}
+  m_Name: HitShape Test 2
+  m_EditorClassIdentifier: Assembly-CSharp::Combat.Attack.Data.Scriptables.HitDetectionScriptable
+  shape: 1
+  boxSize: {x: 0.8, y: 0.8, z: 0.8}
   boxOrientation: {x: 0, y: 0, z: 0, w: 1}
-  sphereRadius: 0.8
+  sphereRadius: 0
   centerSphereStart: {x: 0, y: 0, z: 0}
   centerSphereEnd: {x: 0, y: 0, z: 0}
   capsuleRadius: 0

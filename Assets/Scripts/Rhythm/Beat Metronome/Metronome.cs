@@ -53,7 +53,7 @@ namespace Rhythm.Beat_Metronome
             if (!IsCounting)
                 return;
         
-            var musicTime = DataStorage.MainTrackRealTime;
+            var musicTime = RhythmDataStorage.MainTrackRealTime;
             
             if (!_isBeatActive && musicTime > StartBeatPosition)
             {

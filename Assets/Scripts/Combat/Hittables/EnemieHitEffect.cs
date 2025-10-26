@@ -14,15 +14,25 @@ namespace Combat.Hittables
             _animation.OnKill(() => transform.localScale = Vector3.one);
         }
 
+        private void OnDisable()
+        {
+            _animation.Kill(complete: false);
+        }
+
         public void ApplyHitEffect(float hitValue)
         {
             _animation.Kill();
             
             _animation = DOTween.Sequence();
-            _animation.Append(transform.DOScale(1.5f, .2f));
+            _animation.Append(transform.DOScale(.75f, .2f));
             _animation.Append(transform.DOScale(1f, .2f));
             
             Debug.Log($"Dealing {hitValue} to {gameObject.name}");
+        }
+
+        public void ApplyContactEffect(Vector3 point)
+        {
+            return;
         }
     }
 }

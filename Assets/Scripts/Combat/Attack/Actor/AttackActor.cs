@@ -24,17 +24,23 @@ namespace Combat.Attack.Actor
         public void ExecuteAttack(AttackScriptable attackData)
         {
             var hits = HitDetector.GetHits(_hitPosition, CombatDataStorage.Parameters.maxHitBuffer, attackData.hitShape);
-
             if (hits == null || hits.Length == 0)
             {
                 Debug.Log("Nothing to hit");
                 return;
             }
-
             for (var i = 0; i < hits.Length; i++)
             {
                 _handler.HandleHit(hits[i], attackData.attackAction);
             }
+
+            var raycastHit = HitDetector.GetRaycastPoint(_hitPosition, attackData.hitShape);
+            if (raycastHit.point == Vector3.zero)
+            {
+                Debug.Log("No contact");
+                return;
+            }
+            _handler.HandleContact(raycastHit.point, raycastHit.pointEntity);
         }
     }
 }

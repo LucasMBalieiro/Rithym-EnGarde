@@ -6,7 +6,7 @@ namespace Combat.Attack.Data.Scriptables
     public class ActionScriptable : ScriptableObject
     {
         public float attackDamage;
-        public Animation attackAnimation;
-        public AudioClip attackSoundEffect;
+        public string attackAnimationState;
+        public AudioClip[] attackSoundEffect;
     }
 }

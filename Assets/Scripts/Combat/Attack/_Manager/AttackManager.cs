@@ -1,3 +1,4 @@
+using System;
 using Combat.Attack.Actor;
 using Combat.Attack.Data.Scriptables;
 using UnityEngine;
@@ -16,6 +17,7 @@ namespace Combat.Attack._Manager
         private float _timeSinceLastAttack;
 
         private bool _isActive;
+        public static event Action<ActionScriptable> OnAttackView; 
         
         public AttackManager(Transform hitPosition)
         {
@@ -34,6 +36,10 @@ namespace Combat.Attack._Manager
         {
             _currentAttack = _judge.NextAttack(CombatDataStorage.AttackIsOnBeat, _timeSinceLastAttack);
             
+            if (_currentAttack == null)
+                return;
+            
+            OnAttackView?.Invoke(_currentAttack.attackAction);
             _actor.ExecuteAttack(_currentAttack);
             
             _timeSinceLastAttack = 0f;

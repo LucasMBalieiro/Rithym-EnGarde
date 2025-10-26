@@ -22,5 +22,17 @@ namespace Combat.Attack.Actor
             
             hittable.ApplyHitEffect(actionData.attackDamage);
         }
+
+        public void HandleContact(Vector3 contactPoint, Collider entity)
+        {
+            var hittable = entity.GetComponent<IHitEffect>();
+            if (hittable == null)
+            {
+                Debug.LogWarning($"Target {entity.gameObject.name} does not have a HitEffect interface");
+                return;
+            }
+            
+            hittable.ApplyContactEffect(contactPoint);
+        }
     }
 }

@@ -26,7 +26,7 @@ namespace Utils
             get
             {
                 _instance = FindFirstObjectByType<T>();
-
+                
                 if (_instance == null)
                 {
                     var go = new GameObject(typeof(T).Name);
@@ -39,6 +39,7 @@ namespace Utils
 
         private void Awake()
         {
+            _instance = null;
             if (_instance == null)
             {
                 _instance = this as T;
@@ -48,6 +49,11 @@ namespace Utils
             {
                 Destroy(this.gameObject);
             }
+        }
+
+        private void OnDisable()
+        {
+            _instance = null;
         }
     }
 }

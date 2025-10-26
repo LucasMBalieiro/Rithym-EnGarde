@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -5,14 +6,9 @@ namespace Combat.Utils
 {
    [System.Serializable]
    public class CombatParameters
-   { 
-      public float baseAttackRange;
-      public float baseAttackDelay;
-      public float baseAttackSpeed;
-      public float baseAttackDamage;
-      public LayerMask attackLayer;
-
-      public float sequenceInterval;
+   {
+      [MinMaxSlider(0f, 5f)] [Tooltip("Min is input cooldown, Max is combo tolerance")] 
+      public Vector2 attackInterval;
       
       public int maxHitBuffer;
    }

@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2bc828a76c02d6446a8959f27f959a8c, type: 3}
-  m_Name: Action Test
+  m_Name: Action Test 2
   m_EditorClassIdentifier: Combat::ActionScriptable
   attackDamage: 10
-  attackAnimationState: Slash1
+  attackAnimationState: Slash2
   attackSoundEffect:
   - {fileID: 8300000, guid: c731a36d2e7ff7f4dbf22986d0c13b21, type: 3}
   - {fileID: 8300000, guid: a20939bd4c3cb5f4aa0d982a0b17765a, type: 3}

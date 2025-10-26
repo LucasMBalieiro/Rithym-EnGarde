@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a24a4a3cd7b2f74ca99ff684fbb8b4f, type: 3}
   m_Name: Attack Test 2
   m_EditorClassIdentifier: Assembly-CSharp::Combat.Attack.Data.Scriptables.AttackScriptable
-  attackAction: {fileID: 11400000, guid: cf06da406cbaebd448eb6835b6ea0df0, type: 2}
+  attackAction: {fileID: 11400000, guid: ba6884d3f1826a4439a147b421d241f9, type: 2}
   hitShape: {fileID: 11400000, guid: c3f6ca356e57f5e49a91c29d72d9da48, type: 2}

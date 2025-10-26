@@ -99,5 +99,25 @@ namespace Combat.Attack.Actor
                 results,
                 hitscanData.GetLayerMask());
         }
+
+        public static (Vector3 point, Collider pointEntity) GetRaycastPoint(Transform detectionPosition, HitDetectionScriptable hitscanData)
+        {
+            var hit = DoRaycast(detectionPosition.position, 2, hitscanData.GetLayerMask());
+
+            if (!hit.HasValue)
+            {
+                return (Vector3.zero, null);
+            }
+
+            return (hit.Value.point, hit.Value.collider);
+        }
+
+        private static RaycastHit? DoRaycast(Vector3 pos, float distance, int layer)
+        {
+            RaycastHit hit;
+            var isHit = Physics.Raycast(pos, Vector3.forward, out hit, 2, layer);
+
+            return isHit ? hit : null;
+        }
     }
 }

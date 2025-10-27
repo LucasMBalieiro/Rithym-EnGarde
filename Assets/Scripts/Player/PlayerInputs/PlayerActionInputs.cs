@@ -10,7 +10,6 @@ namespace Player
         public PlayerControls PlayerControls { get; private set; }
         
         public bool AttackPressed { get; private set; }
-        //public bool InteractPressed { get; private set; }
         public bool ThrowPressed { get; private set; }
         public bool DropPressed { get; private set; }
         
@@ -22,7 +21,6 @@ namespace Player
         private void LateUpdate()
         {
             AttackPressed = false;
-            //InteractPressed = false;
             ThrowPressed = false;
         }
 
@@ -46,7 +44,6 @@ namespace Player
             if (!context.performed) return;
             
             AttackPressed = true;
-            //GetComponentInChildren<SwordAnimator>().DoStab();
         }
 
         public void OnInteract(InputAction.CallbackContext context)

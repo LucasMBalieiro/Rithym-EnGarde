@@ -1,6 +1,7 @@
 using System;
 using Interactables;
 using Offhand.InteractableObjects.ItemData;
+using Rhythm._Referee;
 using UnityEngine;
 
 public class PickupItem : MonoBehaviour, IInteractable
@@ -15,6 +16,7 @@ public class PickupItem : MonoBehaviour, IInteractable
     private Rigidbody rb;
 
     private Vector3 verticalThrowForce;
+    private bool onBeat;
     private bool thrown = false;
     
     private void Start()
@@ -38,6 +40,8 @@ public class PickupItem : MonoBehaviour, IInteractable
 
     public void Throw(Transform camera)
     {
+        onBeat = BeatManager.Instance.CheckOnBeat();
+        
         audioSource.PlayOneShot(visualData.throwSound);
         transform.SetParent(null);
         gameObject.layer = LayerMask.NameToLayer("Ground");
@@ -71,10 +75,10 @@ public class PickupItem : MonoBehaviour, IInteractable
     {
         if(!thrown)
             return;
-
+        
+        //TODO: sistema de dano
         switch (itemData.attackType)
         {
-            //TODO: Fazer explosao e nuvem
             case OffhandAttackType.DirectDamage:
                 AudioSource.PlayClipAtPoint(visualData.onHitSound, transform.position);
                 DestroyProjectile();

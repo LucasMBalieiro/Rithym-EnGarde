@@ -1,5 +1,6 @@
 using System.Collections;
 using Player;
+using Rhythm._Referee;
 using UnityEngine;
 
 public class PlayerDash : MonoBehaviour
@@ -11,6 +12,7 @@ public class PlayerDash : MonoBehaviour
     [SerializeField] private float dashCooldown;
     private bool canDash = true;
     private bool dashCooldownTimer = true;
+    private bool onBeat;
     
     private Camera playerCamera;
     private CameraController cameraController;
@@ -51,6 +53,7 @@ public class PlayerDash : MonoBehaviour
     {
         if (playerMoveInputs.DashPressed && canDash && dashCooldownTimer && playerMoveInputs.MovementInput != Vector2.zero && playerState.CurrentPlayerMovementState != PlayerMovementState.Wallrunning)
         {
+            onBeat = BeatManager.Instance.CheckOnBeat();
             StartCoroutine(Dash(playerMoveInputs.MovementInput));
         }
     }
@@ -64,11 +67,14 @@ public class PlayerDash : MonoBehaviour
         canDash = false;
         dashCooldownTimer = false;
         playerController.dashing = true;
-        cameraController.DoFov(70, dashDuration/2);
+        
+        float dashingTime = onBeat ? dashDuration : dashDuration/2;
+        
+        cameraController.DoFov(70, dashingTime/2);
             
         float startTime = Time.time;
             
-        while (Time.time < startTime + dashDuration)
+        while (Time.time < startTime + dashingTime)
         {
             Vector3 dashMovement = dashDirection * dashSpeed;
             dashMovement.y = playerController.GetVerticalVelocity();
@@ -77,7 +83,7 @@ public class PlayerDash : MonoBehaviour
                 
             yield return null;
         }
-        cameraController.DoFov(60, dashDuration/2);
+        cameraController.DoFov(60, dashingTime/2);
         playerController.dashing = false;
             
         yield return new WaitForSeconds(dashCooldown);

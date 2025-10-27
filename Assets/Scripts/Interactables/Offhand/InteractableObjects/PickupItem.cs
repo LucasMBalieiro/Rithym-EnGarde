@@ -12,6 +12,7 @@ public class PickupItem : MonoBehaviour, IInteractable
     [SerializeField] private GameObject explodeEffect;
     [SerializeField] private GameObject cloudEffect;
     
+    private Collider itemCollider;
     private AudioSource audioSource;
     private Rigidbody rb;
 
@@ -21,6 +22,7 @@ public class PickupItem : MonoBehaviour, IInteractable
     
     private void Start()
     {
+        itemCollider = GetComponent<Collider>();
         audioSource = GetComponent<AudioSource>();
         rb = GetComponent<Rigidbody>();
         
@@ -32,6 +34,7 @@ public class PickupItem : MonoBehaviour, IInteractable
     {
         if (GameManager.Instance.IsOffHandFree())
         {
+            itemCollider.enabled = false;
             rb.useGravity = false;
             audioSource.PlayOneShot(visualData.pickupSound);
             GameManager.Instance.SetOffHandItem(this);
@@ -44,7 +47,8 @@ public class PickupItem : MonoBehaviour, IInteractable
         
         audioSource.PlayOneShot(visualData.throwSound);
         transform.SetParent(null);
-        gameObject.layer = LayerMask.NameToLayer("Ground");
+        itemCollider.enabled = true;
+        gameObject.layer = LayerMask.NameToLayer("Default");
 
         Vector3 throwDirection = CalculateDirection(camera);
         

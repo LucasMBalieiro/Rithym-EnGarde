@@ -72,6 +72,21 @@ namespace Combat
             _inputTriggered = false;
         }
 
+        public void OnInteract(InputAction.CallbackContext context)
+        {
+            return;
+        }
+
+        public void OnThrow(InputAction.CallbackContext context)
+        {
+            return;
+        }
+
+        public void OnDrop(InputAction.CallbackContext context)
+        {
+            return;
+        }
+
         private void Update()
         {
             _attackManager.Update();

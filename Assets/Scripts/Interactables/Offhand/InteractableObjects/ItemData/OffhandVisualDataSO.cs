@@ -7,7 +7,6 @@ public class OffhandVisualDataSO : ScriptableObject
     public AudioClip throwSound;
     public AudioClip onHitSound;
     
-    //TODO: aprender a usar o sistema de particulas 
-    //public ParticleSystem trailParticles;
-    //public ParticleSystem onHitParticles;
+    //TODO: add sistema de particulas
+    //TODO: add materiais para explosoes e nuvens
 }

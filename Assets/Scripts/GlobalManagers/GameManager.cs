@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -27,4 +28,21 @@ public class GameManager : MonoBehaviour
         sensX = cameraSensitivityX;
         sensY = cameraSensitivityY;
     }
+
+    #region OffHand
+
+    private bool offHandFree = true;
+    public EventHandler<PickupItem> onEquip;
+
+    public bool IsOffHandFree()
+    {
+        return offHandFree;
+    }
+
+    public void SetOffHandItem(PickupItem offHandItem)
+    {
+        onEquip?.Invoke(this, offHandItem);
+    }
+
+    #endregion
 }

@@ -1,3 +1,5 @@
+using System;
+using Interactables;
 using Player;
 using UnityEngine;
 
@@ -5,39 +7,29 @@ public class PlayerPickupDrop : MonoBehaviour
 {
     [SerializeField] private PlayerActionInputs actionInputs;
     [SerializeField] private Camera playerCamera;
-    [SerializeField] private float maxDistance;
-    [SerializeField] private LayerMask pickupLayer;
     
     private bool hasItem = false;
     private PickupItem itemHeld;
     
-    private void Update()
+    private void Start()
     {
-        if (!hasItem)
-        {
-            InteractHandler();
-        }
-        else
-        {
-            ThrowHandler();
-        }
+        GameManager.Instance.onEquip += OnItemEquip;
     }
 
-    private void InteractHandler()
+    private void OnItemEquip(object sender, PickupItem item)
     {
-        if (!actionInputs.InteractPressed) return;
-        if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out RaycastHit hit,
-                maxDistance, pickupLayer))
-        {
-            itemHeld = hit.collider.GetComponent<PickupItem>();
-            SetItemOnHand(hit.collider.gameObject);
-            itemHeld.Pickup();
-        }
+        itemHeld = item;
+        SetItemOnHand(item.gameObject);
+    }
+
+    private void Update()
+    {
+        ThrowHandler();
     }
 
     private void ThrowHandler()
     {
-        if(!actionInputs.ThrowPressed) return;
+        if(!actionInputs.ThrowPressed || !hasItem) return;
         
         itemHeld.Throw(playerCamera.transform);
         

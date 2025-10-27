@@ -1,3 +1,4 @@
+using Interactables;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,14 +10,19 @@ namespace Player
         public PlayerControls PlayerControls { get; private set; }
         
         public bool AttackPressed { get; private set; }
-        public bool InteractPressed { get; private set; }
+        //public bool InteractPressed { get; private set; }
         public bool ThrowPressed { get; private set; }
         public bool DropPressed { get; private set; }
+        
+        [Header("Interact Components")]
+        [SerializeField] private Camera playerCamera;
+        [SerializeField] private float maxDistance;
+        [SerializeField] private LayerMask interactLayer;
 
         private void LateUpdate()
         {
             AttackPressed = false;
-            InteractPressed = false;
+            //InteractPressed = false;
             ThrowPressed = false;
         }
 
@@ -47,7 +53,14 @@ namespace Player
         {
             if(!context.performed) return;
             
-            InteractPressed = true;
+            if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out RaycastHit hit,
+                    maxDistance, interactLayer))
+            {
+                if (hit.collider.gameObject.TryGetComponent(out IInteractable interactable))
+                {
+                    interactable.Interact();
+                }
+            }
         }
 
         public void OnThrow(InputAction.CallbackContext context)

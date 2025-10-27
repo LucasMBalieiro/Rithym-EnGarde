@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Attack Test
   m_EditorClassIdentifier: Combat::AttackScriptable
   attackAction: {fileID: 11400000, guid: cf06da406cbaebd448eb6835b6ea0df0, type: 2}
-  hitShape: {fileID: 0}
+  hitShape: {fileID: 11400000, guid: 1cedd4ca18414cb4a8c7fe8aca5b299b, type: 2}

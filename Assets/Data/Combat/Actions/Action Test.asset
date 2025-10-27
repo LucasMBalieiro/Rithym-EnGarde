@@ -12,6 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2bc828a76c02d6446a8959f27f959a8c, type: 3}
   m_Name: Action Test
   m_EditorClassIdentifier: Combat::ActionScriptable
-  attackDamage: 0
-  attackAnimation: {fileID: 0}
-  attackSoundEffect: {fileID: 0}
+  attackDamage: 10
+  attackAnimationState: Slash1
+  attackSoundEffect:
+  - {fileID: 8300000, guid: c731a36d2e7ff7f4dbf22986d0c13b21, type: 3}
+  - {fileID: 8300000, guid: a20939bd4c3cb5f4aa0d982a0b17765a, type: 3}
+  - {fileID: 8300000, guid: a10cd60730e29ea4591f29165ab2b384, type: 3}

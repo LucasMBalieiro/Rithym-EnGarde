@@ -1,16 +1,14 @@
-using UnityEngine;
+using Combat.Attack.Data.Scriptables;
+using Combat.Hittables;
+using Utils;
 
-public class AttackViewEffect : MonoBehaviour
+namespace Combat.Attack.View
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public class AttackViewEffect : IViewModule<ActionScriptable>
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        public void ExecuteView(ActionScriptable data)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

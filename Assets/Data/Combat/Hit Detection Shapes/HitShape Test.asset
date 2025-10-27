@@ -15,9 +15,9 @@ MonoBehaviour:
   shape: 2
   boxSize: {x: 0, y: 0, z: 0}
   boxOrientation: {x: 0, y: 0, z: 0, w: 1}
-  sphereRadius: 0
+  sphereRadius: 0.8
   centerSphereStart: {x: 0, y: 0, z: 0}
   centerSphereEnd: {x: 0, y: 0, z: 0}
   capsuleRadius: 0
   useAlloc: 1
-  layers: 
+  layers: 09000000

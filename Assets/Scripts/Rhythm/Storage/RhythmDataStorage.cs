@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Rhythm.Storage
 {
-    public static class DataStorage
+    public static class RhythmDataStorage
     {
         public static RhythmParameters Parameters { get; private set; }
         

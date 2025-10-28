@@ -23,7 +23,7 @@ namespace Combat.Attack.Actor
 
         public void ExecuteAttack(AttackScriptable attackData)
         {
-            var hits = HitDetector.GetHits(_hitPosition, CombatDataStorage.Parameters.maxHitBuffer, attackData.hitShape);
+            var hits = HitDetector.GetHits(_hitPosition, attackData.hitShape);
             if (hits == null || hits.Length == 0)
             {
                 Debug.Log("Nothing to hit");

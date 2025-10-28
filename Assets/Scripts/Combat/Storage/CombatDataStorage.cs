@@ -8,6 +8,8 @@ public static class CombatDataStorage
     
     public static AttackSequence AtkSequence { get; set; }
     public static bool AttackIsOnBeat { get; set; }
+
+    public static Transform Target;
     
     public static void InitializeStorage(CombatParameters parameters)
     {

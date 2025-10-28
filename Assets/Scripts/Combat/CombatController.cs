@@ -27,15 +27,21 @@ namespace Combat
 
         // Control variables
         private bool _inputTriggered;
-        private Transform _hitPosition;
-        public void UpdateHitPosition(Transform newHitPosition) => this._hitPosition = newHitPosition;
-    
-        private void OnEnable()
+
+        protected override void Awake()
         {
+            base.Awake();
+            
             CombatDataStorage.InitializeStorage(parameters.Parameters);
-        
+            
+            // Rude initialization, change later
+            CombatDataStorage.AtkSequence = new AttackSequence(attacks.Count, attacks.ToArray());
+        }
+
+        private void Start()
+        {
             // Initialize managers
-            _attackManager = new AttackManager(_hitPosition);
+            _attackManager = new AttackManager();
         
             EnableInputMap();
         }
@@ -48,12 +54,6 @@ namespace Combat
             _attackManager?.OnDisable();
         
             CombatDataStorage.Cleanup();
-        }
-
-        private void Start()
-        {
-            // Rude initialization, change later
-            CombatDataStorage.AtkSequence = new AttackSequence(attacks.Count, attacks.ToArray());
         }
 
         public void OnAttack(InputAction.CallbackContext context)

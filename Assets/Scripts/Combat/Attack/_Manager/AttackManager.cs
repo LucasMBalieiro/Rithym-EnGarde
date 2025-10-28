@@ -19,13 +19,13 @@ namespace Combat.Attack._Manager
         private bool _isActive;
         public static event Action<ActionScriptable> OnAttackView; 
         
-        public AttackManager(Transform hitPosition)
+        public AttackManager()
         {
-            this._hitPosition = hitPosition;
+            this._hitPosition = CombatDataStorage.Target;
             _currentAttack = null;
             
             _judge = new AttackJudge();
-            _actor = new AttackActor(hitPosition);
+            _actor = new AttackActor(this._hitPosition);
 
             _timeSinceLastAttack = 0f;
 

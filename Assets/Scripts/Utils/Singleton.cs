@@ -37,7 +37,7 @@ namespace Utils
             }
         }
 
-        private void Awake()
+        protected virtual void Awake()
         {
             _instance = null;
             if (_instance == null)

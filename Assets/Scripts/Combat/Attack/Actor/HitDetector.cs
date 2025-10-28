@@ -10,9 +10,9 @@ namespace Combat.Attack.Actor
         // Recebe: Parâmetros de HitDetection, centro do ataque
         // Gera um overlap shape na posição desejada
         // Retorna: A lista de objetos detectados
-        public static Collider[] GetHits(Transform detectionPosition,int maxHitscans, HitDetectionScriptable hitscanData)
+        public static Collider[] GetHits(Transform detectionPosition, HitDetectionScriptable hitscanData)
         {
-            var hits = new Collider[maxHitscans];
+            Collider[] hits;
             switch (hitscanData.shape)
             {
                 case HitDetectionScriptable.OverlapShape.Box when hitscanData.useAlloc:

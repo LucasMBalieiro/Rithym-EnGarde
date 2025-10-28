@@ -20,14 +20,14 @@ namespace Combat.Attack.View
 
         private void Awake()
         {
-            CombatController.Instance.UpdateHitPosition(aimRef);
+            CombatDataStorage.Target = aimRef;
             
             _animation = new AttackViewAnimation(animator);
             _sound = new AttackViewSound(audioSource);
             _effects = new AttackViewEffect();
         }
     
-        private void OnEnable()
+        private void Start()
         {
             AttackManager.OnAttackView += ExecuteAttackView;
         }

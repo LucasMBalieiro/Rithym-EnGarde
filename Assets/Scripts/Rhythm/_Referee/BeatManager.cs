@@ -28,11 +28,11 @@ namespace Rhythm._Referee
             
             _musicPlayer = new MusicPlayer(rhythmParam, this.transform);
             _metronome = new Metronome(rhythmParam);
-            _judge = new RhythmJudge(rhythmParam);
+            _judge = new RhythmJudge();
         }
         private void OnDisable()
         {
-            _judge.OnDisable();
+            // _judge.OnDisable();
             _metronome.OnDisable();
             _musicPlayer.OnDisable();
             RhythmDataStorage.Cleanup();

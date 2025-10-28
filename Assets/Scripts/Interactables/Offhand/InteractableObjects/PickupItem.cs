@@ -79,6 +79,8 @@ public class PickupItem : MonoBehaviour, IInteractable
     {
         if(!thrown)
             return;
+        if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
+            return;
         
         //TODO: sistema de dano
         switch (itemData.attackType)

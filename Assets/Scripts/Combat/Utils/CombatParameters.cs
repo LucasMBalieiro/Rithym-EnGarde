@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -11,5 +12,17 @@ namespace Combat.Utils
       public Vector2 attackInterval;
       
       public int maxHitBuffer;
+
+      public List<ComboState> comboStates;
+   }
+
+   [System.Serializable]
+   public class ComboState
+   {
+      public int threshold;
+      public string stateDescription;
+
+      public Sprite frame;
+      public Color thresholdColor;
    }
 }

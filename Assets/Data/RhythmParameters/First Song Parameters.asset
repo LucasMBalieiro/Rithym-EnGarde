@@ -19,6 +19,6 @@ MonoBehaviour:
       name: First Song
       audioClip: {fileID: 8300000, guid: 42ad16d40b6f1ed4aa8f449b0af20b7f, type: 3}
       loop: 1
-    bpm: 120
+    bpm: 60
     errorMarginMs: 140
     inputCooldown: 0

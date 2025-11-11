@@ -12,6 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 712ac0feebabb6244bf4fe5416652b31, type: 3}
   m_Name: Combat Parameters Test
   m_EditorClassIdentifier: Assembly-CSharp::Combat.Utils.CombatParametersScriptable
-  Parameters:
+  parameters:
     attackInterval: {x: 0.5, y: 1}
     maxHitBuffer: 10
+    comboStates:
+    - threshold: 2
+      stateDescription: 
+      frame: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+      thresholdColor: {r: 0.16981131, g: 0.16981131, b: 0.16981131, a: 1}
+    - threshold: 5
+      stateDescription: Bom
+      frame: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+      thresholdColor: {r: 0.11774889, g: 0.3679245, b: 0, a: 1}

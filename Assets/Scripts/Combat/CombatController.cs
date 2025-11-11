@@ -3,6 +3,7 @@ using Combat.Attack._Manager;
 using Combat.Attack.Data;
 using Combat.Attack.Data.Scriptables;
 using Combat.Utils;
+using Combo;
 using Player;
 using Rhythm._Referee;
 using UnityEngine;
@@ -24,6 +25,7 @@ namespace Combat
     
         // Managers
         private AttackManager _attackManager;
+        private ComboManager _comboManager;
 
         // Control variables
         private bool _inputTriggered;
@@ -32,7 +34,7 @@ namespace Combat
         {
             base.Awake();
             
-            CombatDataStorage.InitializeStorage(parameters.Parameters);
+            CombatDataStorage.InitializeStorage(parameters.parameters);
             
             // Rude initialization, change later
             CombatDataStorage.AtkSequence = new AttackSequence(attacks.Count, attacks.ToArray());
@@ -42,7 +44,8 @@ namespace Combat
         {
             // Initialize managers
             _attackManager = new AttackManager();
-        
+            _comboManager = new ComboManager();
+            
             EnableInputMap();
         }
 
@@ -52,6 +55,7 @@ namespace Combat
         
             // Disable managers
             _attackManager?.OnDisable();
+            _comboManager?.OnDisable();
         
             CombatDataStorage.Cleanup();
         }
@@ -67,8 +71,10 @@ namespace Combat
         
             var onBeat = BeatManager.Instance.CheckOnBeat();
             CombatDataStorage.AttackIsOnBeat = onBeat;
+            
             _attackManager.HandleAttack();
-        
+            _comboManager.UpdateComboCounter();
+            
             _inputTriggered = false;
         }
 

@@ -11,7 +11,6 @@ namespace Combat.Hittables
         private void Awake()
         {
             _animation = DOTween.Sequence();
-            _animation.OnKill(() => transform.localScale = Vector3.one);
         }
 
         private void OnDisable()
@@ -21,9 +20,9 @@ namespace Combat.Hittables
 
         public void ApplyHitEffect(float hitValue)
         {
-            _animation.Kill();
+            if (!_animation.IsPlaying())
+                _animation = DOTween.Sequence();
             
-            _animation = DOTween.Sequence();
             _animation.Append(transform.DOScale(.75f, .2f));
             _animation.Append(transform.DOScale(1f, .2f));
             

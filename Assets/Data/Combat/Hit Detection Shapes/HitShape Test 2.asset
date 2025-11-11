@@ -20,4 +20,4 @@ MonoBehaviour:
   centerSphereEnd: {x: 0, y: 0, z: 0}
   capsuleRadius: 0
   useAlloc: 1
-  layers: 09000000
+  layers: 12000000

@@ -20,7 +20,7 @@ namespace Combat.Attack.Actor
                 return;
             }
             
-            hittable.ApplyHitEffect(actionData.attackDamage);
+            hittable.ApplyHitEffect(actionData.attackDamage * CombatDataStorage.CurrentComboState.boostMultiplier);
         }
 
         public void HandleContact(Vector3 contactPoint, Collider entity)

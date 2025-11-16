@@ -30,5 +30,12 @@ namespace Combo
             // Atualizar View
             OnComboView?.Invoke();
         }
+
+        public void ResetComboCounter()
+        {
+            _comboCounter = 0;
+            CombatDataStorage.SetComboCounter(_comboCounter);
+            OnComboView?.Invoke();
+        }
     }
 }

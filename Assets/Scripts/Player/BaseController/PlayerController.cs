@@ -167,7 +167,7 @@ namespace Player
             Vector3 movementDirection = cameraRightXZ * playerMoveInputs.MovementInput.x + cameraForwardXZ * playerMoveInputs.MovementInput.y;
             
             Vector3 movementDelta = movementDirection * (accelerationMagnitude * Time.deltaTime);
-            Vector3 newVelocity = characterController.velocity + movementDelta;
+            Vector3 newVelocity = characterController.velocity + (movementDelta * CombatDataStorage.BoostMultiplier);
             
             Vector3 currentDrag = newVelocity.normalized * (dragMagnitude * Time.deltaTime);
             newVelocity = (newVelocity.magnitude > dragMagnitude * Time.deltaTime) ? newVelocity - currentDrag : Vector3.zero;

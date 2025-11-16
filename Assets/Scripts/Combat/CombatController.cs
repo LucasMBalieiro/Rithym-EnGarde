@@ -29,6 +29,7 @@ namespace Combat
 
         // Control variables
         private bool _inputTriggered;
+        private bool _comboTimer;
 
         protected override void Awake()
         {
@@ -68,31 +69,32 @@ namespace Combat
                 return;
 
             _inputTriggered = true;
+            if (_comboTimer)
+                CancelInvoke(nameof(ResetCombo));
         
             var onBeat = BeatManager.Instance.CheckOnBeat();
             CombatDataStorage.AttackIsOnBeat = onBeat;
             
             _attackManager.HandleAttack();
+            
             _comboManager.UpdateComboCounter();
+            _comboTimer = true;
+            Invoke(nameof(ResetCombo), CombatDataStorage.Parameters.attackInterval.y);
             
             _inputTriggered = false;
         }
 
-        public void OnInteract(InputAction.CallbackContext context)
-        {
-            return;
-        }
+        public void OnInteract(InputAction.CallbackContext context) { return; }
+        public void OnThrow(InputAction.CallbackContext context) { return; }
+        public void OnDrop(InputAction.CallbackContext context) { return; }
 
-        public void OnThrow(InputAction.CallbackContext context)
+        
+        public void ResetCombo()
         {
-            return;
+            _comboManager.ResetComboCounter();
+            _comboTimer = false;
         }
-
-        public void OnDrop(InputAction.CallbackContext context)
-        {
-            return;
-        }
-
+        
         private void Update()
         {
             _attackManager.Update();

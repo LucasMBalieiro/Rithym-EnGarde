@@ -76,7 +76,7 @@ public class PlayerDash : MonoBehaviour
             
         while (Time.time < startTime + dashingTime)
         {
-            Vector3 dashMovement = dashDirection * dashSpeed;
+            Vector3 dashMovement = dashDirection * (dashSpeed * CombatDataStorage.BoostMultiplier);
             dashMovement.y = playerController.GetVerticalVelocity();
         
             characterController.Move(dashMovement * Time.deltaTime);

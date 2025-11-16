@@ -21,8 +21,10 @@ namespace Combat.Utils
    {
       public int threshold;
       public string stateDescription;
-
+      
       public Sprite frame;
       public Color thresholdColor;
+
+      [Range(1f, 10f)] public float boostMultiplier;
    }
 }

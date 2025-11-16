@@ -19,13 +19,14 @@ public static class CombatDataStorage
     // Combo Parameters
     public static int Combo;
     public static ComboState CurrentComboState;
+    public static float BoostMultiplier => CurrentComboState.boostMultiplier;
     
     public static void InitializeStorage(CombatParameters parameters)
     {
         Parameters = parameters;
         
         AttackIsOnBeat = false;
-        Combo = 0;
+        SetComboCounter(0);
     }
 
     public static void Cleanup()

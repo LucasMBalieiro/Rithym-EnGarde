@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 namespace Rhythm.Utils
 {
@@ -7,6 +8,7 @@ namespace Rhythm.Utils
     public class RhythmParameters
     {
         [Header("Music")]
+        public AudioMixerGroup audioMixerGroup;
         public AudioSource trackPrefab;
         public List<SoundData> soundsToPlay;
 

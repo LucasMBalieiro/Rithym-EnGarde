@@ -414,6 +414,7 @@ GameObject:
   - component: {fileID: 7784703453342940828}
   - component: {fileID: 5863122687307551318}
   - component: {fileID: 6090812033718205988}
+  - component: {fileID: 2791321990246168633}
   m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
@@ -588,6 +589,18 @@ MonoBehaviour:
   aimRef: {fileID: 4555240584201164911}
   animator: {fileID: 2716229564611611555}
   audioSource: {fileID: 3799284218668830707}
+--- !u!114 &2791321990246168633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4898487816726613923}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ad1122076383c242a7949dafaddb17e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UI.PlayerUIInputs
 --- !u!1 &6243027459627684839
 GameObject:
   m_ObjectHideFlags: 0

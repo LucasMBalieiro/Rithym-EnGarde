@@ -3,6 +3,7 @@ using System.Linq;
 using Rhythm.Storage;
 using Rhythm.Utils;
 using UnityEngine;
+using UnityEngine.Audio;
 using Utils;
 
 namespace Rhythm.Music_Player
@@ -11,6 +12,7 @@ namespace Rhythm.Music_Player
     {
         private AudioSource _trackPlayerPrefab;
         private Transform _audioSrcRoot;
+        private AudioMixerGroup _audioMixerGroup;
         
         private AudioSource _mainTrack;
         private Dictionary<string, AudioSource> _audioDictionary;
@@ -18,6 +20,7 @@ namespace Rhythm.Music_Player
         public MusicPlayer(RhythmParameters parameters, Transform audioSrcRoot)
         {
             _trackPlayerPrefab = parameters.trackPrefab;
+            _audioMixerGroup = parameters.audioMixerGroup;
             _audioSrcRoot = audioSrcRoot;
             
             _audioDictionary = new Dictionary<string, AudioSource>();
@@ -83,6 +86,7 @@ namespace Rhythm.Music_Player
         {
             var src = GetAudioSource(soundID);
             _mainTrack = src;
+            _mainTrack.outputAudioMixerGroup = _audioMixerGroup;
 
             RhythmDataStorage.MainTrackStartTime = AudioSettings.dspTime * 1000d;
             _mainTrack.Play();

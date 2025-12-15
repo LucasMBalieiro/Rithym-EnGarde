@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: First Song Parameters
   m_EditorClassIdentifier: Assembly-CSharp::Rhythm.Utils.ParametersScriptable
   parameters:
-    trackPrefab: {fileID: 5994056078960798678, guid: d07cf95d9017be14e8bdca1bc9c990d6, type: 3}
+    audioMixerGroup: {fileID: -8263812819483783721, guid: 06e3dc53df401724a99ad836b15e51f5, type: 2}
+    trackPrefab: {fileID: 4972057633786560468, guid: 630b1d29e6f364c4ea3d85233b21eec1, type: 3}
     soundsToPlay:
     - sound_id: music_002
       name: First Song

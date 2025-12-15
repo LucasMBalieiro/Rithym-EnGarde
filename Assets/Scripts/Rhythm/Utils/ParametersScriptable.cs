@@ -1,6 +1,7 @@
 using System;
 using NaughtyAttributes;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.Serialization;
 
 namespace Rhythm.Utils
